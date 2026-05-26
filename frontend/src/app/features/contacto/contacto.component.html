@@ -1,0 +1,130 @@
+<section class="page-hero">
+  <div class="container">
+    <span class="t-label">Estamos aquí para ayudarte</span>
+    <h1>Contáctanos</h1>
+    <p>Escríbenos por el medio que prefieras y te respondemos pronto.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="contacto-grid">
+
+      <!-- Info panel -->
+      <aside class="contacto-info" rzReveal>
+        <h2 class="contacto-info__title">Información de contacto</h2>
+
+        <ul class="contacto-info__list">
+          <li>
+            <rz-icon name="map-pin" [size]="20" />
+            <div>
+              <strong>Dirección</strong>
+              <a href="https://maps.google.com/maps/place/raizen+hostel/@?q=place_id:ChIJy8KirWqBOI8RlgtHIziytog" target="_blank" rel="noopener">Cl. 20 #21-109, Dosquebradas, Risaralda</a>
+            </div>
+          </li>
+          <li>
+            <rz-icon name="phone" [size]="20" />
+            <div>
+              <strong>Teléfono / WhatsApp</strong>
+              <a href="https://wa.me/573226477512" target="_blank" rel="noopener">+57 322 647 7512</a>
+            </div>
+          </li>
+          <li>
+            <rz-icon name="mail" [size]="20" />
+            <div>
+              <strong>Correo electrónico</strong>
+              <a href="mailto:inforaizenhostel@gmail.com">inforaizenhostel&#64;gmail.com</a>
+            </div>
+          </li>
+          <li>
+            <rz-icon name="clock" [size]="20" />
+            <div>
+              <strong>Horario de recepción</strong>
+              <span>Lun – Dom · 7:00 am – 10:00 pm</span>
+            </div>
+          </li>
+        </ul>
+
+        <a class="btn btn--primary" href="https://wa.me/573226477512" target="_blank" rel="noopener">
+          <rz-icon name="message-circle" [size]="18" />
+          Escribir por WhatsApp
+        </a>
+
+        <div class="contacto-info__social">
+          <strong>Síguenos en redes</strong>
+          <div class="social-links">
+            <a href="https://www.instagram.com/raizen_hostel/" target="_blank" rel="noopener" aria-label="Instagram"><rz-icon name="instagram" /></a>
+            <a href="https://www.facebook.com/Raizenhostel" target="_blank" rel="noopener" aria-label="Facebook"><rz-icon name="facebook" /></a>
+            <a href="https://www.tiktok.com/@raizen.hostel" target="_blank" rel="noopener" aria-label="TikTok">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+            </a>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Formulario -->
+      <div class="contacto-form-wrap" rzReveal [rzDelay]="100">
+        <form [formGroup]="form" (ngSubmit)="submit()">
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="nombre">Nombre</label>
+              <input id="nombre" type="text" formControlName="nombre" placeholder="Tu nombre" />
+            </div>
+            <div class="form-group">
+              <label for="email">Correo</label>
+              <input id="email" type="email" formControlName="email" placeholder="tu@email.com" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="asunto">Asunto</label>
+            <input id="asunto" type="text" formControlName="asunto" placeholder="¿En qué podemos ayudarte?" />
+          </div>
+          <div class="form-group">
+            <label for="mensaje">Mensaje</label>
+            <textarea id="mensaje" formControlName="mensaje" rows="5" placeholder="Escribe tu mensaje aquí..."></textarea>
+          </div>
+
+          <rz-alerta [mensaje]="error()"   tipo="error" />
+          <rz-alerta [mensaje]="success()" tipo="exito" />
+
+          <button type="submit" class="btn btn--primary btn--full" [disabled]="loading() || form.invalid">
+            {{ loading() ? 'Enviando...' : 'Enviar mensaje' }}
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Mapa de Ubicación -->
+<section class="section section--mapa">
+  <div class="container">
+    <div class="mapa-header" rzReveal>
+      <span class="t-label">¿Cómo llegar?</span>
+      <h2>Nuestra Ubicación</h2>
+      <p>Encuéntranos en Dosquebradas, Risaralda. ¡Te esperamos!</p>
+    </div>
+    <div class="mapa-wrapper" rzReveal [rzDelay]="100">
+      <iframe
+        id="mapa-raizen-hostel"
+        title="Ubicación Raizen Hostel en Google Maps"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.123456789!2d-75.6970!3d4.8390!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e38816aada23ccb%3A0x8857b28324070d96!2sRaizen%20Hostel!5e0!3m2!1ses!2sco!4v1700000000000!5m2!1ses!2sco"
+        width="100%"
+        height="450"
+        style="border:0;"
+        allowfullscreen="true"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+      <a
+        class="btn btn--primary mapa-cta"
+        href="https://maps.google.com/maps/place/raizen+hostel/data=!4m2!3m1!1s0x8e38816aada23ccb:0x8857b28324070d96"
+        target="_blank"
+        rel="noopener">
+        <rz-icon name="map-pin" [size]="18" />
+        Ver en Google Maps
+      </a>
+    </div>
+  </div>
+</section>

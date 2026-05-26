@@ -1,0 +1,192 @@
+<rz-hero-carousel />
+
+<!-- ── Tira de marca ──────────────────────────────── -->
+<div class="brand-strip">
+  <div class="brand-strip__logo">
+    <img src="/images/RaizenLogoRed.png" alt="Raizen Hostel" />
+  </div>
+  <p class="brand-strip__location">Dosquebradas · Risaralda · Colombia</p>
+  <div class="brand-strip__divider"></div>
+</div>
+
+<!-- ── Historia ───────────────────────────────────── -->
+<section class="historia-section">
+  <div class="container">
+    <div class="historia-inner" rzReveal>
+      <div class="historia-img">
+        <img src="/images/DSC03375.jpg" alt="Raizen Hostel — sala principal" />
+      </div>
+      <div class="historia-content">
+        <span class="t-label">{{ 'HISTORIA.LABEL' | rzTranslate }}</span>
+        <h2 class="historia-title" [innerHTML]="'HISTORIA.TITLE' | rzTranslate"></h2>
+        <p class="historia-text">{{ 'HISTORIA.TEXT_1' | rzTranslate }}</p>
+        <p class="historia-text">{{ 'HISTORIA.TEXT_2' | rzTranslate }}</p>
+        <div class="historia-valores">
+          <div class="historia-valor">
+            <rz-icon name="leaf" [size]="22" class="historia-valor__icon historia-valor__icon--raiz" />
+            <span>{{ 'HISTORIA.VAL_RAIZ' | rzTranslate }}</span>
+          </div>
+          <div class="historia-valor__sep"></div>
+          <div class="historia-valor">
+            <rz-icon name="home" [size]="22" class="historia-valor__icon historia-valor__icon--hogar" />
+            <span>{{ 'HISTORIA.VAL_HOGAR' | rzTranslate }}</span>
+          </div>
+          <div class="historia-valor__sep"></div>
+          <div class="historia-valor">
+            <rz-icon name="sparkles" [size]="22" class="historia-valor__icon historia-valor__icon--bienestar" />
+            <span>{{ 'HISTORIA.VAL_BIENESTAR' | rzTranslate }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Galería 4 columnas ─────────────────────────── -->
+<div class="galeria-strip">
+  <div class="galeria-strip__item galeria-strip__item--tall">
+    <img src="/images/DSC03849-Pano.jpg" alt="Raizen Hostel" />
+  </div>
+  <div class="galeria-strip__item">
+    <img src="/images/DSC03459.jpg" alt="Raizen Hostel" />
+  </div>
+  <div class="galeria-strip__item galeria-strip__item--tall">
+    <img src="/images/DSC03791.jpg" alt="Raizen Hostel" />
+  </div>
+  <div class="galeria-strip__item">
+    <img src="/images/DSC03653.jpg" alt="Raizen Hostel" />
+  </div>
+</div>
+
+<!-- ── Experiencia ────────────────────────────────── -->
+<section class="experiencia-section">
+  <div class="container">
+    <div class="experiencia-header" rzReveal>
+      <span class="t-label t-label--light">{{ 'EXPERIENCIA.LABEL' | rzTranslate }}</span>
+      <h2 class="experiencia-title" [innerHTML]="'EXPERIENCIA.TITLE' | rzTranslate"></h2>
+    </div>
+
+    <div class="experiencia-grid" rzReveal>
+
+      <div class="exp-card">
+        <rz-icon name="coffee" [size]="28" class="exp-card__icon" />
+        <h3 class="exp-card__title">{{ 'EXPERIENCIA.S1_TITLE' | rzTranslate }}</h3>
+        <p class="exp-card__desc">{{ 'EXPERIENCIA.S1_DESC' | rzTranslate }}</p>
+      </div>
+
+      <div class="exp-card">
+        <rz-icon name="bed-double" [size]="28" class="exp-card__icon" />
+        <h3 class="exp-card__title">{{ 'EXPERIENCIA.S2_TITLE' | rzTranslate }}</h3>
+        <p class="exp-card__desc">{{ 'EXPERIENCIA.S2_DESC' | rzTranslate }}</p>
+      </div>
+
+      <div class="exp-card">
+        <rz-icon name="monitor" [size]="28" class="exp-card__icon" />
+        <h3 class="exp-card__title">{{ 'EXPERIENCIA.S3_TITLE' | rzTranslate }}</h3>
+        <p class="exp-card__desc">{{ 'EXPERIENCIA.S3_DESC' | rzTranslate }}</p>
+      </div>
+
+      <div class="exp-card">
+        <rz-icon name="moon" [size]="28" class="exp-card__icon" />
+        <h3 class="exp-card__title">{{ 'EXPERIENCIA.S4_TITLE' | rzTranslate }}</h3>
+        <p class="exp-card__desc">{{ 'EXPERIENCIA.S4_DESC' | rzTranslate }}</p>
+      </div>
+
+      <div class="exp-card">
+        <rz-icon name="wifi" [size]="28" class="exp-card__icon" />
+        <h3 class="exp-card__title">{{ 'EXPERIENCIA.S5_TITLE' | rzTranslate }}</h3>
+        <p class="exp-card__desc">{{ 'EXPERIENCIA.S5_DESC' | rzTranslate }}</p>
+      </div>
+
+      <div class="exp-card">
+        <rz-icon name="leaf" [size]="28" class="exp-card__icon" />
+        <h3 class="exp-card__title">{{ 'EXPERIENCIA.S6_TITLE' | rzTranslate }}</h3>
+        <p class="exp-card__desc">{{ 'EXPERIENCIA.S6_DESC' | rzTranslate }}</p>
+      </div>
+
+      <div class="exp-card">
+        <rz-icon name="shield-check" [size]="28" class="exp-card__icon" />
+        <h3 class="exp-card__title">{{ 'EXPERIENCIA.S7_TITLE' | rzTranslate }}</h3>
+        <p class="exp-card__desc">{{ 'EXPERIENCIA.S7_DESC' | rzTranslate }}</p>
+      </div>
+
+      <div class="exp-card">
+        <rz-icon name="heart-handshake" [size]="28" class="exp-card__icon" />
+        <h3 class="exp-card__title">{{ 'EXPERIENCIA.S8_TITLE' | rzTranslate }}</h3>
+        <p class="exp-card__desc">{{ 'EXPERIENCIA.S8_DESC' | rzTranslate }}</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Habitaciones & Áreas ────────────────────────── -->
+<section class="espacios-section">
+  <div class="container">
+    <div class="espacios-header" rzReveal>
+      <span class="t-label">{{ 'ESPACIOS.LABEL' | rzTranslate }}</span>
+      <h2 class="espacios-title" [innerHTML]="'ESPACIOS.TITLE' | rzTranslate"></h2>
+    </div>
+    <div class="espacios-grid" rzReveal>
+      <div class="espacios-item" (click)="openLightbox('/images/DSC03546.jpg')">
+        <img src="/images/DSC03546.jpg" alt="Habitación Doble" loading="lazy" />
+        <span class="espacios-item__label">{{ 'ESPACIOS.HAB_DOBLE' | rzTranslate }}</span>
+      </div>
+      <div class="espacios-item" (click)="openLightbox('/images/DSC03601.jpg')">
+        <img src="/images/DSC03601.jpg" alt="Habitación Triple" loading="lazy" />
+        <span class="espacios-item__label">{{ 'ESPACIOS.HAB_TRIPLE' | rzTranslate }}</span>
+      </div>
+      <div class="espacios-item" (click)="openLightbox('/images/DSC03601.jpg')">
+        <img src="/images/DSC03601.jpg" alt="Habitación Cuádruple" loading="lazy" />
+        <span class="espacios-item__label">{{ 'ESPACIOS.HAB_CUADRUPLE' | rzTranslate }}</span>
+      </div>
+      <div class="espacios-item" (click)="openLightbox('/images/DSC03827.jpg')">
+        <img src="/images/DSC03827.jpg" alt="Dormitorio Compartido" loading="lazy" />
+        <span class="espacios-item__label">{{ 'ESPACIOS.HAB_DORMITORIO' | rzTranslate }}</span>
+      </div>
+      <div class="espacios-item" (click)="openLightbox('/images/DSC03728.jpg')">
+        <img src="/images/DSC03728.jpg" alt="Camarotes con Dosel" loading="lazy" />
+        <span class="espacios-item__label">{{ 'ESPACIOS.HAB_CAMAROTES' | rzTranslate }}</span>
+      </div>
+      <div class="espacios-item" (click)="openLightbox('/images/DSC03415-Pano.jpg')">
+        <img src="/images/DSC03415-Pano.jpg" alt="Comedor Social" loading="lazy" />
+        <span class="espacios-item__label">{{ 'ESPACIOS.HAB_COMEDOR' | rzTranslate }}</span>
+      </div>
+      <div class="espacios-item" (click)="openLightbox('/images/DSC03465.jpg')">
+        <img src="/images/DSC03465.jpg" alt="Cocina Equipada" loading="lazy" />
+        <span class="espacios-item__label">{{ 'ESPACIOS.HAB_COCINA' | rzTranslate }}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Lightbox -->
+@if (lightboxSrc()) {
+<div class="lightbox" (click)="closeLightbox()">
+  <button class="lightbox__close" (click)="closeLightbox()" aria-label="Cerrar">
+    <rz-icon name="x" [size]="22" />
+  </button>
+  <img [src]="lightboxSrc()!" alt="" (click)="$event.stopPropagation()" />
+</div>
+}
+
+<!-- Valores -->
+<rz-valores-grid />
+
+<!-- Destacados -->
+<rz-destacados-strip />
+
+<!-- CTA Reserva -->
+<section class="section cta-section">
+  <div class="container">
+    <div class="cta-inner" rzReveal>
+      <span class="t-label">{{ 'HOME.AVAILABILITY_LABEL' | rzTranslate }}</span>
+      <h2 class="cta-title" [innerHTML]="'HOME.AVAILABILITY_TITLE' | rzTranslate"></h2>
+      <p class="cta-subtitle">{{ 'HOME.AVAILABILITY_SUBTITLE' | rzTranslate }}</p>
+      <div class="cta-actions">
+        <a class="btn btn--dorado btn--lg" routerLink="/reservas">{{ 'NAVBAR.RESERVE_NOW' | rzTranslate }}</a>
+        <a class="btn btn--outline" routerLink="/habitaciones">{{ 'HERO.VIEW_ROOMS' | rzTranslate }}</a>
+      </div>
+    </div>
+  </div>
+</section>

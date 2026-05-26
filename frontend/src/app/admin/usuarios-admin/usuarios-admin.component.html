@@ -1,0 +1,130 @@
+<div class="admin-page">
+  <div class="admin-page__header">
+    <div>
+      <h1>Gestión de Usuarios</h1>
+      <p>Administra los miembros del panel y visualiza tus clientes</p>
+    </div>
+    <button class="btn btn--primary" (click)="showForm.set(!showForm())" *ngIf="tab() === 'admins'">
+      <rz-icon [name]="showForm() ? 'x' : 'user-plus'" [size]="20" />
+      {{ showForm() ? 'Cancelar' : 'Nuevo Administrador' }}
+    </button>
+  </div>
+
+  <!-- Tabs Navigation -->
+  <div class="admin-tabs">
+    <button class="tab-btn" [class.tab-btn--active]="tab() === 'clientes'" (click)="setTab('clientes')">
+      <rz-icon name="users" [size]="16" /> Clientes (Huéspedes)
+    </button>
+    <button class="tab-btn" [class.tab-btn--active]="tab() === 'admins'" (click)="setTab('admins')">
+      <rz-icon name="shield" [size]="16" /> Administradores
+    </button>
+  </div>
+
+  <rz-alerta [mensaje]="error()" tipo="error" *ngIf="error()" />
+  <rz-alerta [mensaje]="success()" tipo="exito" *ngIf="success()" />
+
+  <!-- FORMULARIO ADMIN -->
+  <div class="admin-section" *ngIf="showForm() && tab() === 'admins'">
+    <div class="admin-section__header"><h2>Registrar Administrador</h2></div>
+    <form [formGroup]="form" (ngSubmit)="crearAdmin()" class="form-grid">
+      <div class="form-group">
+        <label>Nombre</label>
+        <input type="text" formControlName="nombre" class="form-input" placeholder="Nombre completo">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" formControlName="email" class="form-input" placeholder="admin@raizen.com">
+      </div>
+      <div class="form-group">
+        <label>Contraseña</label>
+        <input type="password" formControlName="password" class="form-input" placeholder="Min. 6 caracteres">
+      </div>
+      <div class="form-submit" style="grid-column:1/-1;">
+        <button type="submit" class="btn btn--primary" [disabled]="form.invalid || saving()">
+          <rz-icon *ngIf="saving()" name="loader" class="spin" />
+          {{ saving() ? 'Guardando...' : 'Guardar Administrador' }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- TAB: CLIENTES -->
+  <div class="report-tab-content" *ngIf="tab() === 'clientes'">
+    <div class="admin-section">
+      <div class="admin-section__header">
+        <h2>Listado de Clientes Registrados</h2>
+      </div>
+      
+      <div *ngIf="loadingClientes()" class="skeleton" style="height:200px;border-radius:8px"></div>
+
+      <div class="tabla-wrap" *ngIf="!loadingClientes()">
+        <table class="admin-tabla">
+          <thead>
+            <tr><th>Nombre</th><th>Contacto</th><th>Doc/RC</th><th>Reservas</th><th>Total Invertido</th><th>Estado</th><th>Acciones</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let c of clientes()">
+              <td>
+                <strong>{{ c.nombre }}</strong><br>
+                <small style="color:var(--carbon-soft)">{{ c.created_at | fechaCo }}</small>
+              </td>
+              <td>
+                {{ c.email }}<br>
+                <small *ngIf="c.telefono" style="color:var(--carbon-soft)">{{ c.telefono }}</small>
+              </td>
+              <td>{{ c.documento || '-' }}</td>
+              <td>{{ c.total_reservas }}</td>
+              <td class="font-display" style="color:var(--raiz)">{{ c.total_gastado | copCurrency }}</td>
+              <td>
+                <rz-badge [variant]="c.activo ? 'exito' : 'error'">{{ c.activo ? 'Activo' : 'Bloqueado' }}</rz-badge>
+              </td>
+              <td>
+                <button class="btn-icon" [title]="c.activo ? 'Bloquear' : 'Desbloquear'" 
+                        (click)="toggleActivoCliente(c)" [class.btn-icon--danger]="c.activo">
+                  <rz-icon [name]="c.activo ? 'lock' : 'unlock'" [size]="18" />
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="clientes().length === 0">
+              <td colspan="7" style="text-align:center; padding:var(--sp-2xl)">No hay clientes registrados aún.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: ADMINS -->
+  <div class="report-tab-content" *ngIf="tab() === 'admins'">
+    <div class="admin-section">
+      <div class="admin-section__header">
+        <h2>Listado de Administradores</h2>
+      </div>
+
+      <div *ngIf="loadingAdmins()" class="skeleton" style="height:200px;border-radius:8px"></div>
+
+      <div class="tabla-wrap" *ngIf="!loadingAdmins()">
+        <table class="admin-tabla">
+          <thead>
+            <tr><th>Nombre</th><th>Email</th><th>Estado</th><th>Registro</th><th>Acciones</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let u of admins()">
+              <td><strong>{{ u.nombre }}</strong></td>
+              <td>{{ u.email }}</td>
+              <td><rz-badge [variant]="u.activo ? 'exito' : 'error'">{{ u.activo ? 'Activo' : 'Inactivo' }}</rz-badge></td>
+              <td>{{ u.created_at | fechaCo }}</td>
+              <td>
+                <button class="btn-icon" [title]="u.activo ? 'Desactivar' : 'Activar'" 
+                        (click)="toggleActivoAdmin(u)" [class.btn-icon--danger]="u.activo">
+                  <rz-icon [name]="u.activo ? 'power-off' : 'power'" [size]="18" />
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,274 @@
+<div class="admin-page">
+  <div class="admin-page__header">
+    <div>
+      <h1>Reportes y Estadísticas</h1>
+      <p>Análisis integral de rendimiento del hostel</p>
+    </div>
+  </div>
+
+  <!-- Tabs Navigation -->
+  <div class="admin-tabs">
+    <button class="tab-btn" [class.tab-btn--active]="tab() === 'ocupacion'" (click)="setTab('ocupacion')">
+      <rz-icon name="calendar" [size]="16" /> Ocupación
+    </button>
+    <button class="tab-btn" [class.tab-btn--active]="tab() === 'ingresos'" (click)="setTab('ingresos')">
+      <rz-icon name="dollar-sign" [size]="16" /> Ingresos
+    </button>
+    <button class="tab-btn" [class.tab-btn--active]="tab() === 'reservas'" (click)="setTab('reservas')">
+      <rz-icon name="check-square" [size]="16" /> Reservas
+    </button>
+    <button class="tab-btn" [class.tab-btn--active]="tab() === 'clientes'" (click)="setTab('clientes')">
+      <rz-icon name="users" [size]="16" /> Clientes
+    </button>
+  </div>
+
+  <!-- TAB: OCUPACIÓN -->
+  <div class="report-tab-content" *ngIf="tab() === 'ocupacion'">
+    <div class="reportes-kpis" *ngIf="!loadingOcupacion()">
+      <div class="kpi-card">
+        <div class="kpi-card__item">
+          <div class="kpi-card__icon" style="background:rgba(92,61,30,.1)">
+            <rz-icon name="percent" [size]="24" style="color:var(--raiz)" />
+          </div>
+          <div>
+            <span class="kpi-card__value">{{ promedioOcupacion }}%</span>
+            <span class="kpi-card__label">Ocupación promedio</span>
+            <span class="kpi-card__sub">Últimos 30 días</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="admin-section">
+      <div class="admin-section__header">
+        <h2>Ocupación diaria — últimos 30 días</h2>
+      </div>
+      <div class="chart-wrap">
+        <canvas #ocupacionCanvas></canvas>
+      </div>
+    </div>
+
+    <div class="admin-section">
+      <div class="admin-section__header">
+        <h2>Detalle de ocupación</h2>
+      </div>
+      <div class="tabla-wrap">
+        <table class="admin-tabla">
+          <thead>
+            <tr><th>Fecha</th><th>Unidades ocupadas</th><th>Total unidades</th><th>% Ocupación</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let d of ocupacion()">
+              <td>{{ d.fecha }}</td>
+              <td>{{ d.ocupadas }}</td>
+              <td>{{ d.total }}</td>
+              <td>
+                <div class="ocupacion-bar-wrap">
+                  <div class="ocupacion-bar" [style.width.%]="d.porcentaje"></div>
+                  <span>{{ d.porcentaje }}%</span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: INGRESOS -->
+  <div class="report-tab-content" *ngIf="tab() === 'ingresos'">
+    <div class="reportes-kpis" *ngIf="!loadingIngresos()">
+      <div class="kpi-card">
+        <div class="kpi-card__item">
+          <div class="kpi-card__icon" style="background:rgba(200,149,42,.1)">
+            <rz-icon name="circle-dollar-sign" [size]="24" style="color:var(--dorado)" />
+          </div>
+          <div>
+            <span class="kpi-card__value">{{ totalIngresos | copCurrency:'' }}</span>
+            <span class="kpi-card__label">Ingresos totales</span>
+            <span class="kpi-card__sub">Período seleccionado</span>
+          </div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-card__item">
+          <div class="kpi-card__icon" style="background:rgba(90,122,94,.1)">
+            <rz-icon name="credit-card" [size]="24" style="color:var(--musgo)" />
+          </div>
+          <div>
+            <span class="kpi-card__value">{{ totalReservasIngresos }}</span>
+            <span class="kpi-card__label">Reservas pagadas</span>
+            <span class="kpi-card__sub">Período seleccionado</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-section">
+      <div class="admin-section__header">
+        <h2>Ingresos por período</h2>
+        <div class="periodo-toggle">
+          <button class="btn btn--sm" [class]="periodoIngresos() === 'semana' ? 'btn--primary' : 'btn--outline'" (click)="cambiarPeriodoIngresos('semana')">
+            Por semana
+          </button>
+          <button class="btn btn--sm" [class]="periodoIngresos() === 'mes' ? 'btn--primary' : 'btn--outline'" (click)="cambiarPeriodoIngresos('mes')">
+            Por mes
+          </button>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <canvas #ingresosCanvas></canvas>
+      </div>
+    </div>
+    
+    <div class="admin-section">
+      <div class="tabla-wrap">
+        <table class="admin-tabla">
+          <thead>
+            <tr><th>Período</th><th>Reservas Pagadas</th><th>Ingresos Totales (COP)</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of ingresos()">
+              <td><strong>{{ item.periodo }}</strong></td>
+              <td>{{ item.reservas }}</td>
+              <td class="font-display" style="color:var(--raiz)">{{ item.total | copCurrency }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: RESERVAS -->
+  <div class="report-tab-content" *ngIf="tab() === 'reservas'">
+    <div *ngIf="loadingReservas()" class="reportes-kpis">
+      <div class="skeleton" style="height:100px;border-radius:var(--radius-lg)" *ngFor="let i of [1,2,3]"></div>
+    </div>
+    
+    <ng-container *ngIf="reservas() as r">
+      <div class="reportes-kpis">
+        <div class="kpi-card">
+          <div class="kpi-card__item">
+            <div class="kpi-card__icon" style="background:rgba(90,122,94,.1)">
+              <rz-icon name="check-circle" [size]="24" style="color:var(--musgo)" />
+            </div>
+            <div>
+              <span class="kpi-card__value">{{ r.activas }}</span>
+              <span class="kpi-card__label">Reservas Activas</span>
+              <span class="kpi-card__sub">Pendientes o En curso</span>
+            </div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-card__item">
+            <div class="kpi-card__icon" style="background:rgba(92,61,30,.1)">
+              <rz-icon name="moon" [size]="24" style="color:var(--raiz)" />
+            </div>
+            <div>
+              <span class="kpi-card__value">{{ r.promedio_noches }}</span>
+              <span class="kpi-card__label">Promedio de noches</span>
+              <span class="kpi-card__sub">Histórico</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2col" style="display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-lg); margin-top:var(--sp-2xl);">
+        <div class="admin-section">
+          <div class="admin-section__header"><h2>Top Habitaciones Reservadas</h2></div>
+          <div class="tabla-wrap">
+            <table class="admin-tabla">
+              <thead><tr><th>Habitación</th><th>Reservas Totales</th></tr></thead>
+              <tbody>
+                <tr *ngFor="let h of r.top_habitaciones">
+                  <td><strong>{{ h.nombre_display }}</strong> <small>({{h.numero}})</small></td>
+                  <td>{{ h.total_reservas }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="admin-section">
+          <div class="admin-section__header"><h2>Reservas por Estado</h2></div>
+          <div class="tabla-wrap">
+            <table class="admin-tabla">
+              <thead><tr><th>Estado</th><th>Total</th></tr></thead>
+              <tbody>
+                <tr *ngFor="let e of r.por_estado">
+                  <td style="text-transform:capitalize">{{ e.estado.replace('_', ' ') }}</td>
+                  <td><strong>{{ e.total }}</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- TAB: CLIENTES -->
+  <div class="report-tab-content" *ngIf="tab() === 'clientes'">
+    <div *ngIf="loadingClientes()" class="reportes-kpis">
+      <div class="skeleton" style="height:100px;border-radius:var(--radius-lg)" *ngFor="let i of [1,2,3]"></div>
+    </div>
+    
+    <ng-container *ngIf="clientes() as c">
+      <div class="reportes-kpis">
+        <div class="kpi-card">
+          <div class="kpi-card__item">
+            <div class="kpi-card__icon" style="background:rgba(92,61,30,.1)">
+              <rz-icon name="users" [size]="24" style="color:var(--raiz)" />
+            </div>
+            <div>
+              <span class="kpi-card__value">{{ c.total_clientes }}</span>
+              <span class="kpi-card__label">Total Huéspedes Registrados</span>
+            </div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-card__item">
+            <div class="kpi-card__icon" style="background:rgba(200,149,42,.1)">
+              <rz-icon name="user-plus" [size]="24" style="color:var(--dorado)" />
+            </div>
+            <div>
+              <span class="kpi-card__value">{{ c.nuevos_este_mes }}</span>
+              <span class="kpi-card__label">Nuevos clientes este mes</span>
+            </div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-card__item">
+            <div class="kpi-card__icon" style="background:rgba(90,122,94,.1)">
+              <rz-icon name="check-square" [size]="24" style="color:var(--musgo)" />
+            </div>
+            <div>
+              <span class="kpi-card__value">{{ c.con_reservas }}</span>
+              <span class="kpi-card__label">Con al menos 1 reserva</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-section" style="margin-top:var(--sp-2xl);">
+        <div class="admin-section__header"><h2>Top 10 Clientes Frecuentes</h2></div>
+        <div class="tabla-wrap">
+          <table class="admin-tabla">
+            <thead><tr><th>Cliente</th><th>Email</th><th>Total Reservas</th><th>Total Invertido</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let top of c.top_clientes">
+                <td><strong>{{ top.nombre }}</strong></td>
+                <td>{{ top.email }}</td>
+                <td>{{ top.total_reservas }}</td>
+                <td class="font-display" style="color:var(--raiz)">{{ top.total_gastado | copCurrency }}</td>
+              </tr>
+              <tr *ngIf="c.top_clientes.length === 0">
+                <td colspan="4" style="text-align:center; padding:var(--sp-lg)">Aún no hay reservas de clientes.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+</div>

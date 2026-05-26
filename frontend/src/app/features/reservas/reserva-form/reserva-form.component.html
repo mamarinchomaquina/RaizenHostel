@@ -1,0 +1,184 @@
+<!-- Hero -->
+<section class="reserva-hero">
+  <div class="reserva-hero__content">
+    <span class="reserva-hero__label">Hostal Raizen · Dosquebradas</span>
+    <h1 class="reserva-hero__title">Reserva tu estadía</h1>
+    <p class="reserva-hero__sub">
+      Elige tu alojamiento, selecciona las fechas y paga de forma segura.
+    </p>
+  </div>
+  <div class="reserva-hero__decoration"></div>
+</section>
+
+<!-- Main content -->
+<section class="reserva-section">
+  <div class="reserva-wrapper">
+
+    <!-- Steps indicator -->
+    <div class="reserva-steps">
+      <div class="reserva-steps__item" [class.reserva-steps__item--active]="true">
+        <span class="reserva-steps__num">1</span>
+        <span class="reserva-steps__text">Alojamiento</span>
+      </div>
+      <div class="reserva-steps__line" [class.reserva-steps__line--active]="!!form.value.unidad_id"></div>
+      <div class="reserva-steps__item" [class.reserva-steps__item--active]="!!form.value.unidad_id">
+        <span class="reserva-steps__num">2</span>
+        <span class="reserva-steps__text">Fechas</span>
+      </div>
+      <div class="reserva-steps__line" [class.reserva-steps__line--active]="noches > 0"></div>
+      <div class="reserva-steps__item" [class.reserva-steps__item--active]="noches > 0">
+        <span class="reserva-steps__num">3</span>
+        <span class="reserva-steps__text">Confirmar</span>
+      </div>
+    </div>
+
+    <!-- Form card -->
+    <div class="reserva-card" rzReveal>
+      <form [formGroup]="form" (ngSubmit)="submit()">
+
+        <!-- Room selection -->
+        <div class="reserva-field">
+          <label for="unidad_id">
+            <rz-icon name="bed" [size]="14" />
+            Alojamiento
+          </label>
+
+          <!-- Visual bed/room selector -->
+          <div class="unit-selector">
+            <!-- Private rooms -->
+            <div class="unit-group">
+              <h4 class="unit-group__title">
+                <rz-icon name="lock" [size]="14" />
+                Habitaciones Privadas
+              </h4>
+              <div class="unit-grid">
+                @for (h of habitacionesPrivadas(); track h.id) {
+                  <button type="button"
+                    class="unit-chip"
+                    [class.unit-chip--selected]="form.value.unidad_id === h.id"
+                    [class.unit-chip--disabled]="!h.disponible"
+                    [disabled]="!h.disponible"
+                    (click)="selectUnidad(h)">
+                    <span class="unit-chip__icon">
+                      <rz-icon [name]="h.disponible ? 'door-open' : 'door-closed'" [size]="18" />
+                    </span>
+                    <span class="unit-chip__name">{{ h.nombre_display }}</span>
+                    <span class="unit-chip__info">{{ h.tipo?.nombre }} · {{ h.tipo?.capacidad }} pers.</span>
+                    <span class="unit-chip__price">{{ h.precio | copCurrency: '' }}</span>
+                    @if (!h.disponible) {
+                      <span class="unit-chip__status">Ocupada</span>
+                    }
+                  </button>
+                }
+              </div>
+            </div>
+
+            <!-- Shared beds -->
+            <div class="unit-group">
+              <h4 class="unit-group__title">
+                <rz-icon name="users" [size]="14" />
+                Dormitorio Compartido
+              </h4>
+              <div class="unit-grid unit-grid--beds">
+                @for (h of habitacionesCompartidas(); track h.id) {
+                  <button type="button"
+                    class="unit-chip unit-chip--bed"
+                    [class.unit-chip--selected]="form.value.unidad_id === h.id"
+                    [class.unit-chip--disabled]="!h.disponible"
+                    [class.unit-chip--camarote]="h.tipo?.slug === 'cama-camarote'"
+                    [disabled]="!h.disponible"
+                    (click)="selectUnidad(h)">
+                    <span class="unit-chip__icon">
+                      @if (h.tipo?.slug === 'cama-camarote') {
+                        <rz-icon name="bed" [size]="20" />
+                      } @else {
+                        <rz-icon name="bed-single" [size]="20" />
+                      }
+                    </span>
+                    <span class="unit-chip__name">{{ h.nombre_display }}</span>
+                    <span class="unit-chip__info">
+                      {{ h.tipo?.slug === 'cama-camarote' ? 'Camarote' : 'Cama sencilla' }}
+                    </span>
+                    <span class="unit-chip__price">{{ h.precio | copCurrency: '' }}</span>
+                    @if (!h.disponible) {
+                      <span class="unit-chip__status">Ocupada</span>
+                    }
+                  </button>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Selected room info chip -->
+          <div class="reserva-field__room-info" *ngIf="habitacionSeleccionada">
+            <span class="reserva-field__tipo-badge"
+              [class.reserva-field__tipo-badge--privada]="isPrivada(habitacionSeleccionada)"
+              [class.reserva-field__tipo-badge--compartida]="!isPrivada(habitacionSeleccionada)">
+              <rz-icon
+                [name]="isPrivada(habitacionSeleccionada) ? 'lock' : 'users'"
+                [size]="12" />
+              {{ isPrivada(habitacionSeleccionada) ? 'Privada' : 'Compartida' }}
+            </span>
+            <span class="reserva-field__desc">{{ habitacionSeleccionada.descripcion }}</span>
+          </div>
+        </div>
+
+        <!-- Notes -->
+        <div class="reserva-field">
+          <label for="notas">
+            <rz-icon name="message-square" [size]="14" />
+            Notas especiales
+            <span class="reserva-field__opt">(opcional)</span>
+          </label>
+          <input type="text" id="notas" formControlName="notas" placeholder="Ej: llegada tarde, necesito toalla extra..." />
+        </div>
+
+        <!-- Calendar -->
+        <div class="reserva-calendar-section">
+          <label class="reserva-calendar-label">
+            <rz-icon name="calendar" [size]="14" />
+            Fechas de estadía
+          </label>
+          <p class="reserva-calendar-hint" *ngIf="!form.value.unidad_id">
+            Selecciona primero el alojamiento para ver disponibilidad y precios.
+          </p>
+          <rz-date-range-picker
+            [precioNoche]="precioNoche"
+            [unidadId]="form.value.unidad_id ?? null"
+            (rangeChange)="onRangeChange($event)">
+          </rz-date-range-picker>
+        </div>
+
+        <!-- Payment summary -->
+        <div class="reserva-pago" *ngIf="noches > 0">
+          <div class="reserva-pago__header">
+            <rz-icon name="receipt" [size]="16" />
+            <span>Resumen de reserva</span>
+          </div>
+          <div class="reserva-pago__row">
+            <span>{{ habitacionSeleccionada?.nombre_display }}</span>
+            <span>{{ precioNoche | copCurrency }} × {{ noches }} noche{{ noches > 1 ? 's' : '' }}</span>
+          </div>
+          <div class="reserva-pago__total">
+            <span>Total a pagar</span>
+            <strong>{{ total | copCurrency:'' }}</strong>
+          </div>
+        </div>
+
+        <!-- Error alert -->
+        <rz-alerta [mensaje]="error()" tipo="error" />
+
+        <!-- Submit -->
+        <button
+          type="submit"
+          class="btn btn--primary btn--full reserva-submit"
+          [disabled]="loading() || form.invalid || !checkin || !checkout">
+          <rz-icon name="credit-card" [size]="16" />
+          {{ loading() ? 'Procesando...' : 'Continuar al pago' }}
+        </button>
+
+      </form>
+    </div>
+
+  </div>
+</section>

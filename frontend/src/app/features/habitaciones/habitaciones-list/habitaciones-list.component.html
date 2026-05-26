@@ -1,0 +1,184 @@
+<!-- ── Hero ────────────────────────────────────────────────── -->
+<section class="page-hero">
+  <div class="container">
+    <span class="t-label">{{ 'HABITACIONES.LABEL_HERO' | rzTranslate }}</span>
+    <h1 [innerHTML]="'HABITACIONES.TITLE_HERO' | rzTranslate"></h1>
+    <p>{{ 'HABITACIONES.DESC_HERO' | rzTranslate }}</p>
+  </div>
+</section>
+
+<!-- ── Precios ──────────────────────────────────────────────── -->
+<section class="section precios-section">
+  <div class="container">
+
+    <div class="precios-header" rzReveal>
+      <span class="t-label">{{ 'HABITACIONES.LABEL_PRECIO' | rzTranslate }}</span>
+      <h2 class="precios-title" [innerHTML]="'HABITACIONES.TITLE_PRECIOS' | rzTranslate"></h2>
+    </div>
+
+    <!-- Warning banner -->
+    <div class="warning-banner" rzReveal>
+      <rz-icon name="ban" [size]="28" class="warning-banner__icon" />
+      <div>
+        <p class="warning-banner__title">
+          <rz-icon name="triangle-alert" [size]="14" />
+          {{ 'HABITACIONES.WARNING_TITLE' | rzTranslate }}
+        </p>
+        <p class="warning-banner__desc">{{ 'HABITACIONES.WARNING_DESC' | rzTranslate }}</p>
+      </div>
+    </div>
+
+    <!-- Loading skeleton -->
+    @if (loading()) {
+      <div class="tipo-grid">
+        @for (i of [1,2,3,4,5,6]; track i) {
+          <div class="skeleton" style="height:270px; border-radius:16px;"></div>
+        }
+      </div>
+    }
+
+    <!-- Error -->
+    @if (error()) {
+      <div class="empty-state">
+        <rz-icon name="wifi-off" [size]="48" />
+        <p>{{ error() }}</p>
+      </div>
+    }
+
+    <!-- Grid de tipos -->
+    @if (!loading() && !error()) {
+      <div class="tipo-grid" rzReveal>
+        @for (tipo of tipos(); track tipo.id) {
+          <div class="tipo-card"
+               [class.tipo-card--popular]="tipo.popular"
+               [class.tipo-card--clickable]="tipo.imagenes.length > 0"
+               (click)="openGaleria(tipo)">
+
+            <!-- ── Carousel Header inside card ── -->
+            @if (tipo.imagenes.length > 0) {
+              <div class="tipo-card__img-wrap">
+                <img [src]="tipo.imagenes[0].url" [alt]="tipo.nombre" class="tipo-card__img" loading="lazy">
+                
+                @if (tipo.imagenes.length > 1) {
+                  <button class="tipo-card__btn-nav tipo-card__btn-nav--prev" aria-label="Anterior" (click)="openGaleria(tipo); $event.stopPropagation()">
+                    <rz-icon name="chevron-left" [size]="16" />
+                  </button>
+                  <button class="tipo-card__btn-nav tipo-card__btn-nav--next" aria-label="Siguiente" (click)="openGaleria(tipo); $event.stopPropagation()">
+                    <rz-icon name="chevron-right" [size]="16" />
+                  </button>
+                  <div class="tipo-card__dots">
+                    @for (img of tipo.imagenes; track $index) {
+                      <span class="tipo-card__dot" [class.tipo-card__dot--active]="$index === 0"></span>
+                    }
+                  </div>
+                }
+                <!-- Click overlay to open full gallery -->
+                <div class="tipo-card__img-overlay" (click)="openGaleria(tipo); $event.stopPropagation()">
+                  <rz-icon name="maximize-2" [size]="20" />
+                </div>
+              </div>
+            } @else {
+              <div class="tipo-card__img-wrap tipo-card__img-wrap--empty">
+                <rz-icon name="bed" [size]="40" />
+              </div>
+            }
+
+            <div class="tipo-card__body">
+              <div class="tipo-card__head">
+                <span class="tipo-card__cat">
+                  {{ tipo.categoria === 'compartido'
+                     ? ('HABITACIONES.CAT_COMPARTIDO' | rzTranslate)
+                     : ('HABITACIONES.CAT_PRIVADA' | rzTranslate) }}
+                </span>
+                @if (tipo.popular) {
+                  <span class="tipo-card__popular">{{ 'HABITACIONES.POPULAR' | rzTranslate }}</span>
+                }
+              </div>
+
+              <h3 class="tipo-card__nombre">{{ tipo.nombre }}</h3>
+              <p class="tipo-card__cap">
+                {{ tipo.capacidad }}
+                {{ tipo.capacidad === 1
+                   ? ('HABITACIONES.PERSONA' | rzTranslate)
+                   : ('HABITACIONES.PERSONAS' | rzTranslate) }}
+              </p>
+
+            <div class="tipo-card__precio">
+              <span class="tipo-card__monto">{{ tipo.precio | copCurrency : '' }}</span>
+              <span class="tipo-card__unit">{{ 'HABITACIONES.POR_NOCHE' | rzTranslate }}</span>
+            </div>
+
+            <p class="tipo-card__feat">
+              <rz-icon name="check" [size]="11" />
+              {{ 'HABITACIONES.FEAT_LIST' | rzTranslate }}
+            </p>
+
+            @if (tipo.imagenes.length) {
+              <p class="tipo-card__fotos-hint">
+                <rz-icon name="images" [size]="12" />
+                {{ tipo.imagenes.length }} {{ 'HABITACIONES.FOTOS' | rzTranslate }}
+              </p>
+            }
+
+            <a class="btn btn--sm tipo-card__cta"
+               [class.btn--dorado]="tipo.popular"
+               [class.btn--primary]="!tipo.popular"
+               [routerLink]="['/reservas']"
+               [queryParams]="{ tipo: tipo.slug }"
+               (click)="$event.stopPropagation()">
+              {{ 'HABITACIONES.RESERVAR' | rzTranslate }}
+            </a>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Info bar -->
+      <div class="info-bar" rzReveal>
+        <p>
+          <strong>{{ 'HABITACIONES.INFO_LABEL' | rzTranslate }}</strong>
+          {{ 'HABITACIONES.INFO_LIST' | rzTranslate }}
+        </p>
+      </div>
+    }
+
+  </div>
+</section>
+
+<!-- ── Lightbox carousel ────────────────────────────────────── -->
+@if (selectedTipo()) {
+  <div class="lb-overlay" (click)="closeGaleria()">
+    <button class="lb-close" (click)="closeGaleria()" aria-label="Cerrar">
+      <rz-icon name="x" [size]="20" />
+    </button>
+
+    <div class="lb-carousel" (click)="$event.stopPropagation()">
+      <img
+        [src]="selectedTipo()!.imagenes[carouselIndex()].url"
+        [alt]="selectedTipo()!.nombre"
+        class="lb-img" />
+
+      @if (selectedTipo()!.imagenes.length > 1) {
+        <button class="lb-nav lb-nav--prev" (click)="prevImg()">
+          <rz-icon name="chevron-left" [size]="26" />
+        </button>
+        <button class="lb-nav lb-nav--next" (click)="nextImg()">
+          <rz-icon name="chevron-right" [size]="26" />
+        </button>
+        <div class="lb-dots">
+          @for (img of selectedTipo()!.imagenes; track $index) {
+            <button class="lb-dot"
+                    [class.lb-dot--active]="$index === carouselIndex()"
+                    (click)="carouselIndex.set($index)">
+            </button>
+          }
+        </div>
+      }
+
+      <div class="lb-info">
+        <span>{{ selectedTipo()!.nombre }}</span>
+        <span>{{ carouselIndex() + 1 }} / {{ selectedTipo()!.imagenes.length }}</span>
+      </div>
+    </div>
+  </div>
+}

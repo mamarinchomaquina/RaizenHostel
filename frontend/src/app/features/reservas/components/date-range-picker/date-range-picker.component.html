@@ -1,0 +1,146 @@
+<div class="pricing-calendar">
+  <!-- Navigation header -->
+  <div class="cal-nav">
+    <button
+      type="button"
+      class="cal-nav__btn"
+      [class.cal-nav__btn--disabled]="!canGoPrev"
+      (click)="prevMonth()"
+      aria-label="Mes anterior">
+      <rz-icon name="chevron-left" [size]="16" />
+    </button>
+    <div class="cal-nav__titles">
+      <span class="cal-nav__month">{{ leftLabel() }}</span>
+      <span class="cal-nav__month">{{ rightLabel() }}</span>
+    </div>
+    <button type="button" class="cal-nav__btn" (click)="nextMonth()" aria-label="Mes siguiente">
+      <rz-icon name="chevron-right" [size]="16" />
+    </button>
+  </div>
+
+  <!-- Dual calendar grid -->
+  <div class="cal-dual">
+    <!-- Left month -->
+    <div class="cal-panel">
+      <div class="cal-weekdays">
+        <span *ngFor="let d of DIAS_SEMANA">{{ d }}</span>
+      </div>
+      <div class="cal-grid">
+        <ng-container *ngFor="let cell of leftCells; trackBy: trackByFn">
+          <div *ngIf="!cell" class="cal-cell cal-cell--empty"></div>
+          <button
+            *ngIf="cell"
+            type="button"
+            class="cal-cell"
+            [class.cal-cell--disabled]="cell.disabled"
+            [class.cal-cell--occupied]="cell.occupied"
+            [class.cal-cell--selected]="cell.isCheckin || cell.isCheckout"
+            [class.cal-cell--checkin]="cell.isCheckin"
+            [class.cal-cell--checkout]="cell.isCheckout"
+            [class.cal-cell--in-range]="cell.inRange"
+            [class.cal-cell--today]="cell.isToday"
+            [class.cal-cell--good-price]="cell.isGoodPrice"
+            [disabled]="cell.disabled || cell.occupied"
+            (mouseenter)="handleMouseEnter(cell)"
+            (mouseleave)="handleMouseLeave()"
+            (click)="handleClick(cell)">
+            <span class="cal-cell__day">{{ cell.day }}</span>
+            <span class="cal-cell__price" *ngIf="cell.price !== null && !cell.occupied">
+              {{ formatPrice(cell.price) }}
+            </span>
+            <span class="cal-cell__price cal-cell__price--occupied" *ngIf="cell.occupied">
+              Ocupada
+            </span>
+          </button>
+        </ng-container>
+      </div>
+    </div>
+
+    <!-- Right month -->
+    <div class="cal-panel">
+      <div class="cal-weekdays">
+        <span *ngFor="let d of DIAS_SEMANA">{{ d }}</span>
+      </div>
+      <div class="cal-grid">
+        <ng-container *ngFor="let cell of rightCells; trackBy: trackByFn">
+          <div *ngIf="!cell" class="cal-cell cal-cell--empty"></div>
+          <button
+            *ngIf="cell"
+            type="button"
+            class="cal-cell"
+            [class.cal-cell--disabled]="cell.disabled"
+            [class.cal-cell--occupied]="cell.occupied"
+            [class.cal-cell--selected]="cell.isCheckin || cell.isCheckout"
+            [class.cal-cell--checkin]="cell.isCheckin"
+            [class.cal-cell--checkout]="cell.isCheckout"
+            [class.cal-cell--in-range]="cell.inRange"
+            [class.cal-cell--today]="cell.isToday"
+            [class.cal-cell--good-price]="cell.isGoodPrice"
+            [disabled]="cell.disabled || cell.occupied"
+            (mouseenter)="handleMouseEnter(cell)"
+            (mouseleave)="handleMouseLeave()"
+            (click)="handleClick(cell)">
+            <span class="cal-cell__day">{{ cell.day }}</span>
+            <span class="cal-cell__price" *ngIf="cell.price !== null && !cell.occupied">
+              {{ formatPrice(cell.price) }}
+            </span>
+            <span class="cal-cell__price cal-cell__price--occupied" *ngIf="cell.occupied">
+              Ocupada
+            </span>
+          </button>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <!-- Legend -->
+  <div class="cal-legend">
+    <div class="cal-legend__item">
+      <span class="cal-legend__dot cal-legend__dot--good"></span>
+      <span>Mejor precio</span>
+    </div>
+    <div class="cal-legend__item">
+      <span class="cal-legend__dot cal-legend__dot--selected"></span>
+      <span>Seleccionado</span>
+    </div>
+    <div class="cal-legend__item">
+      <span class="cal-legend__dot cal-legend__dot--occupied"></span>
+      <span>Ocupada</span>
+    </div>
+  </div>
+</div>
+
+<!-- Stay summary -->
+<div class="cal-summary" *ngIf="checkin() || checkout()">
+  <div class="cal-summary__dates">
+    <div class="cal-summary__date-item">
+      <rz-icon name="log-in" [size]="15" />
+      <div>
+        <span class="cal-summary__label">Llegada</span>
+        <strong>{{ formatDate(checkin()) }}</strong>
+      </div>
+    </div>
+    <div class="cal-summary__date-item">
+      <rz-icon name="log-out" [size]="15" />
+      <div>
+        <span class="cal-summary__label">Salida</span>
+        <strong>{{ formatDate(checkout()) }}</strong>
+      </div>
+    </div>
+    <div class="cal-summary__date-item" *ngIf="noches > 0">
+      <rz-icon name="moon" [size]="15" />
+      <div>
+        <span class="cal-summary__label">Noches</span>
+        <strong>{{ noches }}</strong>
+      </div>
+    </div>
+  </div>
+  <div class="cal-summary__total" *ngIf="noches > 0">
+    <span>Total Estadía</span>
+    <strong>{{ total | copCurrency:'' }}</strong>
+  </div>
+  <button type="button" class="cal-summary__clear" (click)="clearDates()">
+    <rz-icon name="x" [size]="13" />
+    Limpiar fechas
+  </button>
+</div>

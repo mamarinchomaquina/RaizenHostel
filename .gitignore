@@ -1,0 +1,19 @@
+# Dependencies
+frontend/node_modules/
+backend/vendor/
+
+# Build output
+frontend/dist/
+frontend/.angular/
+
+# Environment / secrets
+backend/config/db.php
+*.env
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

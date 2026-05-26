@@ -1,0 +1,17 @@
+<section class="section valores-section">
+  <div class="container">
+    <div class="section-header" rzReveal>
+      <span class="t-label">Nuestra Filosofía</span>
+      <h2 class="section-title">Lo que nos define</h2>
+    </div>
+    <div class="valores-grid">
+      <div class="valor-card" *ngFor="let v of valores; let i = index" rzReveal [rzDelay]="i * 100">
+        <div class="valor-card__icon">
+          <rz-icon [name]="v.icono" [size]="28" [strokeWidth]="1.5" />
+        </div>
+        <h3 class="valor-card__title">{{ v.titulo }}</h3>
+        <p class="valor-card__desc">{{ v.desc }}</p>
+      </div>
+    </div>
+  </div>
+</section>

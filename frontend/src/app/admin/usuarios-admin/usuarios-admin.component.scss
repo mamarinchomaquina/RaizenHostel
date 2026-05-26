@@ -1,0 +1,65 @@
+.admin-page__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-md);
+  margin-bottom: var(--sp-xl);
+}
+
+.admin-tabs {
+  display: flex;
+  gap: var(--sp-sm);
+  margin-bottom: var(--sp-xl);
+  border-bottom: 2px solid var(--crema);
+  padding-bottom: var(--sp-xs);
+  overflow-x: auto;
+
+  .tab-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: var(--sp-sm) var(--sp-lg);
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    color: var(--raiz-claro);
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    cursor: pointer;
+    transition: all var(--ease-base);
+    white-space: nowrap;
+
+    &:hover {
+      color: var(--raiz);
+      background: var(--crema);
+    }
+
+    &--active {
+      color: var(--raiz);
+      border-bottom-color: var(--raiz);
+      background: rgba(216, 193, 151, 0.15);
+    }
+  }
+}
+
+.report-tab-content {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--sp-lg);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}

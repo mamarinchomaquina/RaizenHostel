@@ -1,0 +1,154 @@
+<div class="admin-page">
+  <div class="admin-page__header">
+    <div>
+      <h1>Mensajes de Contacto</h1>
+      <p>Bandeja de entrada de las consultas realizadas desde la web</p>
+    </div>
+  </div>
+
+  <rz-alerta [mensaje]="error()" tipo="error" *ngIf="error()" />
+  <rz-alerta [mensaje]="success()" tipo="exito" *ngIf="success()" />
+
+  <div class="mensajes-layout" *ngIf="!mensajeActivo()">
+    
+    <!-- Sidebar / Filtros -->
+    <aside class="mensajes-sidebar">
+      <div class="stats-panel" *ngIf="stats() as s">
+        <div class="stat-item" [class.active]="filtroEstado() === ''" (click)="filtrarPor('')">
+          <div class="stat-icon"><rz-icon name="inbox" [size]="18"/></div>
+          <div class="stat-info">
+            <span class="label">Todos</span>
+            <span class="value">{{ s.total }}</span>
+          </div>
+        </div>
+        <div class="stat-item" [class.active]="filtroEstado() === 'nuevo'" (click)="filtrarPor('nuevo')">
+          <div class="stat-icon" style="color:var(--raiz)"><rz-icon name="mail" [size]="18"/></div>
+          <div class="stat-info">
+            <span class="label">Nuevos (Sin leer)</span>
+            <span class="value">{{ s.nuevos }}</span>
+          </div>
+        </div>
+        <div class="stat-item" [class.active]="filtroEstado() === 'leido'" (click)="filtrarPor('leido')">
+          <div class="stat-icon" style="color:var(--carbon-soft)"><rz-icon name="mail-open" [size]="18"/></div>
+          <div class="stat-info">
+            <span class="label">Leídos</span>
+            <span class="value">{{ s.leidos }}</span>
+          </div>
+        </div>
+        <div class="stat-item" [class.active]="filtroEstado() === 'respondido'" (click)="filtrarPor('respondido')">
+          <div class="stat-icon" style="color:var(--musgo)"><rz-icon name="send" [size]="18"/></div>
+          <div class="stat-info">
+            <span class="label">Respondidos</span>
+            <span class="value">{{ s.respondidos }}</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Lista de Mensajes -->
+    <div class="mensajes-lista-wrap">
+      <div *ngIf="loading()" class="skeleton" style="height:300px; border-radius: var(--radius-lg)"></div>
+      
+      <div class="mensajes-lista" *ngIf="!loading()">
+        
+        <div class="mensaje-row" *ngFor="let m of mensajes()" 
+             [class.mensaje-row--nuevo]="m.estado === 'nuevo'"
+             (click)="abrirMensaje(m.id)">
+          
+          <div class="m-avatar">{{ m.nombre.charAt(0).toUpperCase() }}</div>
+          
+          <div class="m-content">
+            <div class="m-header">
+              <span class="m-nombre">{{ m.nombre }}</span>
+              <span class="m-fecha">{{ m.created_at | fechaCo }}</span>
+            </div>
+            <div class="m-asunto">{{ m.asunto }}</div>
+            <div class="m-preview">{{ m.mensaje }}</div>
+          </div>
+          
+          <div class="m-actions">
+            <rz-badge [variant]="m.estado === 'nuevo' ? 'dorado' : (m.estado === 'respondido' ? 'exito' : 'arena')">
+              {{ m.estado }}
+            </rz-badge>
+            <button class="btn-icon btn-icon--danger" (click)="eliminar(m.id, $event)" title="Eliminar">
+              <rz-icon name="trash-2" [size]="16" />
+            </button>
+          </div>
+        </div>
+
+        <div class="mensaje-empty" *ngIf="mensajes().length === 0">
+          <rz-icon name="inbox" [size]="48" style="color:var(--crema-dark)" />
+          <h3>Bandeja vacía</h3>
+          <p>No hay mensajes en esta categoría.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Vista Detalle de Mensaje -->
+  <div class="mensaje-detalle" *ngIf="mensajeActivo() as m">
+    <div class="detalle-header">
+      <button class="btn btn--outline btn--sm" (click)="volver()">
+        <rz-icon name="arrow-left" [size]="16" /> Volver
+      </button>
+      <div class="detalle-actions">
+        <rz-badge [variant]="m.estado === 'respondido' ? 'exito' : 'arena'">{{ m.estado | uppercase }}</rz-badge>
+        <button class="btn-icon btn-icon--danger" (click)="eliminar(m.id, $event)" title="Eliminar">
+          <rz-icon name="trash-2" [size]="18" />
+        </button>
+      </div>
+    </div>
+
+    <div class="detalle-body">
+      <h2 class="d-asunto">{{ m.asunto }}</h2>
+      <div class="d-sender">
+        <div class="m-avatar">{{ m.nombre.charAt(0).toUpperCase() }}</div>
+        <div>
+          <strong>{{ m.nombre }}</strong>
+          <span style="color:var(--carbon-soft); margin-left:8px;">&lt;{{ m.email }}&gt;</span>
+          <div style="font-size:var(--fs-xs); color:var(--carbon-soft); margin-top:2px;">
+            {{ m.created_at | date:'medium':'':'es-CO' }}
+          </div>
+        </div>
+      </div>
+      
+      <div class="d-mensaje">
+        {{ m.mensaje }}
+      </div>
+    </div>
+
+    <!-- Hilo de Respuesta -->
+    <div class="detalle-reply-wrapper">
+      <div class="d-respuesta-historial" *ngIf="m.estado === 'respondido'">
+        <div class="d-respuesta-header">
+          <rz-icon name="send" [size]="16" style="color:var(--musgo)" />
+          <strong>Respuesta Enviada</strong>
+          <span class="d-fecha" *ngIf="m.respondido_at">{{ m.respondido_at | date:'short':'':'es-CO' }}</span>
+        </div>
+        <div class="d-respuesta-body">
+          {{ m.respuesta }}
+        </div>
+      </div>
+
+      <div class="d-reply-box" *ngIf="m.estado !== 'respondido'">
+        <h3>Responder a {{ m.nombre }}</h3>
+        <p class="help-text">La respuesta se enviará automáticamente al correo <strong>{{ m.email }}</strong></p>
+        
+        <textarea rows="6" class="form-input" 
+                  placeholder="Escribe tu respuesta aquí..." 
+                  [ngModel]="respuesta()"
+                  (ngModelChange)="respuesta.set($event)"></textarea>
+                  
+        <div class="reply-actions">
+          <button class="btn btn--primary" (click)="responder()" [disabled]="!respuesta().trim() || respondiendo()">
+            <rz-icon *ngIf="respondiendo()" name="loader" class="spin" />
+            <rz-icon *ngIf="!respondiendo()" name="send" />
+            {{ respondiendo() ? 'Enviando email...' : 'Enviar Respuesta' }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

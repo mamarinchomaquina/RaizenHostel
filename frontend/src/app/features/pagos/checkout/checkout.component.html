@@ -1,0 +1,87 @@
+<div class="checkout-container" *ngIf="!loading() && reserva() as r">
+  <div class="checkout-wrapper">
+    
+    <!-- Summary -->
+    <div class="summary-card" rzReveal>
+      <div class="summary-card__header">
+        <h2 class="summary-card__title">Resumen de tu Reserva</h2>
+        <span class="summary-card__code">Referencia: #{{ r.codigo }}</span>
+      </div>
+
+      <div class="summary-card__body">
+        <div class="item">
+          <rz-icon name="home" [size]="16" />
+          <div class="item__info">
+            <span class="item__label">Alojamiento</span>
+            <span class="item__value">{{ r.unidad?.nombre_display }}</span>
+          </div>
+        </div>
+
+        <div class="item">
+          <rz-icon name="calendar" [size]="16" />
+          <div class="item__info">
+            <span class="item__label">Estadía</span>
+            <span class="item__value">{{ r.checkin | fechaCo }} al {{ r.checkout | fechaCo }} ({{ r.noches }} noches)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="summary-card__footer">
+        <div class="total-row">
+          <span>Total a Pagar</span>
+          <strong>{{ r.total | copCurrency:'' }}</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment action -->
+    <div class="payment-card" rzReveal [rzDelay]="200">
+      <div class="payment-card__info">
+        <rz-icon name="shield-check" [size]="24" class="icon-secure" />
+        <div>
+          <h3>Pago Seguro</h3>
+          <p>Utilizamos Wompi para procesar tu pago de forma encriptada y segura.</p>
+        </div>
+      </div>
+
+      <div class="payment-card__methods">
+        <img 
+          src="https://checkout.wompi.co/img/logos-metodos-pago.png" 
+          alt="Métodos de pago" 
+          class="wompi-badges" 
+          style="max-width: 100%; height: auto; margin: 20px 0;"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+        <div class="fallback-methods" style="display: none; font-size: 0.9rem; color: #666; margin-bottom: 20px; font-style: italic;">
+          Aceptamos tarjetas de crédito, PSE, Nequi y Bancolombia.
+        </div>
+      </div>
+
+      <rz-alerta [mensaje]="error()" tipo="error" style="display: block; margin-bottom: 20px;" />
+
+      <button 
+        type="button" 
+        class="btn btn--primary btn--full btn--lg"
+        (click)="pagar()"
+        [disabled]="procesando()">
+        <rz-icon [name]="procesando() ? 'loader' : 'credit-card'" [size]="18" [class.spin]="procesando()" />
+        {{ procesando() ? 'Abriendo pasarela...' : 'Pagar con Wompi' }}
+      </button>
+
+      <p class="payment-footer" style="text-align: center; font-size: 0.8rem; color: #777; margin-top: 15px;">
+        Al hacer clic en el botón, se abrirá el widget de pago seguro de Wompi.
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<!-- Loading state -->
+<div class="loading-full" *ngIf="loading()" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 60vh;">
+  <div class="loader" style="width: 40px; height: 40px; border: 4px solid #eee; border-top: 4px solid var(--raiz); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+  <p style="margin-top: 20px; font-family: var(--font-display); color: var(--raiz);">Preparando tu pago seguro...</p>
+</div>
+
+<style>
+  @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  .spin { animation: spin 1s linear infinite; }
+</style>

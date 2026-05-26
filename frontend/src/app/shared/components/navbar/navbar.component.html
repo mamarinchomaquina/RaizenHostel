@@ -1,0 +1,49 @@
+<header class="navbar" [class.scrolled]="scrolled()">
+  <div class="navbar__container">
+    <a class="navbar__brand" routerLink="/" (click)="closeMenu()">
+      <span class="navbar__brand-name">Raizen</span>
+      <span class="navbar__brand-tag">Hostel</span>
+    </a>
+
+    <nav class="navbar__nav" [class.open]="menuOpen()">
+      <a routerLink="/"            routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" (click)="closeMenu()">{{ 'NAVBAR.HOME' | rzTranslate }}</a>
+      <a routerLink="/habitaciones" routerLinkActive="active" (click)="closeMenu()">{{ 'NAVBAR.ROOMS' | rzTranslate }}</a>
+      <a routerLink="/reservas"     routerLinkActive="active" (click)="closeMenu()">{{ 'NAVBAR.RESERVE' | rzTranslate }}</a>
+      <a routerLink="/galeria"      routerLinkActive="active" (click)="closeMenu()">{{ 'NAVBAR.GALLERY' | rzTranslate }}</a>
+      <a routerLink="/servicios"    routerLinkActive="active" (click)="closeMenu()">{{ 'NAVBAR.SERVICES' | rzTranslate }}</a>
+      <a routerLink="/contacto"     routerLinkActive="active" (click)="closeMenu()">{{ 'NAVBAR.CONTACT' | rzTranslate }}</a>
+
+      <ng-container *ngIf="auth.isLoggedIn(); else loginLink">
+        <a routerLink="/mis-reservas" routerLinkActive="active" (click)="closeMenu()">
+          <rz-icon name="bookmark" [size]="14" />
+          {{ 'NAVBAR.MY_RESERVES' | rzTranslate }}
+        </a>
+        <span class="navbar__user">
+          <rz-icon name="user" [size]="16" />
+          {{ firstName }}
+        </span>
+        <button class="navbar__logout btn btn--ghost btn--sm" (click)="logout()">
+          <rz-icon name="log-out" [size]="16" />
+          {{ 'NAVBAR.LOGOUT' | rzTranslate }}
+        </button>
+      </ng-container>
+      <ng-template #loginLink>
+        <a class="btn btn--primary btn--sm" routerLink="/login" (click)="closeMenu()">
+          <rz-icon name="user" [size]="16" />
+          {{ 'NAVBAR.SIGN_IN' | rzTranslate }}
+        </a>
+      </ng-template>
+
+      <!-- Language Swicher -->
+      <button class="navbar__lang-btn" (click)="langService.toggleLanguage()" title="Cambiar Idioma">
+        <rz-icon name="globe" [size]="14" />
+        {{ langService.currentLang() === 'es' ? 'ES' : 'EN' }}
+      </button>
+
+    </nav>
+
+    <button class="navbar__hamburger" (click)="toggleMenu()" [attr.aria-label]="menuOpen() ? 'Cerrar menú' : 'Abrir menú'">
+      <rz-icon [name]="menuOpen() ? 'x' : 'menu'" [size]="24" />
+    </button>
+  </div>
+</header>

@@ -1,0 +1,220 @@
+<div class="admin-page">
+  <div class="admin-page__header">
+    <h1>Habitaciones</h1>
+    <p>Gestiona los tipos de alojamiento, precios, habitaciones privadas y camas del dormitorio</p>
+  </div>
+
+  <!-- Tabs -->
+  <div class="admin-tabs">
+    <button class="admin-tab"
+            [class.admin-tab--active]="activeTab() === 'tipos'"
+            (click)="switchTab('tipos')">
+      <rz-icon name="layers" [size]="14" />
+      Tipos y Precios
+    </button>
+    <button class="admin-tab"
+            [class.admin-tab--active]="activeTab() === 'unidades'"
+            (click)="switchTab('unidades')">
+      <rz-icon name="bed" [size]="14" />
+      Unidades ({{ habitaciones().length }})
+    </button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TAB: TIPOS DE HABITACIÓN
+       ═══════════════════════════════════════════════════════════ -->
+  <div *ngIf="activeTab() === 'tipos'">
+
+    <!-- Tipos list -->
+    <div class="admin-section" *ngIf="!editandoTipo()">
+      <div class="tipos-grid">
+        <div class="tipo-admin-card" *ngFor="let t of tipos()" [class.tipo-admin-card--popular]="t.popular">
+          <div class="tipo-admin-card__head">
+            <span class="tipo-admin-card__cat">
+              {{ t.slug.startsWith('cama-') ? '🛏 Compartido' : '🏠 Privada' }}
+            </span>
+            <rz-badge *ngIf="t.popular" variant="dorado">Popular</rz-badge>
+          </div>
+          <h3 class="tipo-admin-card__nombre">{{ t.nombre }}</h3>
+          <p class="tipo-admin-card__desc">{{ t.descripcion }}</p>
+          <div class="tipo-admin-card__stats">
+            <span><rz-icon name="users" [size]="12" /> {{ t.capacidad }} persona{{ t.capacidad > 1 ? 's' : '' }}</span>
+            <span><rz-icon name="door-open" [size]="12" /> {{ t.unidades_disponibles }}/{{ t.total_unidades }} disp.</span>
+          </div>
+          <div class="tipo-admin-card__footer">
+            <span class="tipo-admin-card__price">{{ t.precio_base | copCurrency }}</span>
+            <button class="btn btn--outline btn--sm" (click)="editarTipo(t)">
+              <rz-icon name="pencil" [size]="14" /> Editar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tipo editor -->
+    <div class="hab-editor" *ngIf="editandoTipo() as t">
+      <div class="hab-editor__header">
+        <h2>Editando: {{ t.nombre }}</h2>
+        <button class="btn btn--ghost btn--sm" (click)="cancelarTipo()">
+          <rz-icon name="x" [size]="16" /> Cancelar
+        </button>
+      </div>
+
+      <form [formGroup]="tipoForm" (ngSubmit)="guardarTipo()" class="hab-editor__form">
+        <div class="form-group">
+          <label>Nombre del tipo</label>
+          <input type="text" formControlName="nombre" />
+        </div>
+        <div class="form-group">
+          <label>Descripción</label>
+          <textarea formControlName="descripcion" rows="3"></textarea>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Precio base por noche (COP)</label>
+            <input type="number" formControlName="precio_base" min="1" />
+            <span class="form-hint">Al cambiar el precio, se actualizará en todas las unidades de este tipo.</span>
+          </div>
+          <div class="form-group">
+            <label>¿Es popular?</label>
+            <select formControlName="popular">
+              <option [ngValue]="true">Sí — se destaca</option>
+              <option [ngValue]="false">No</option>
+            </select>
+          </div>
+        </div>
+
+        <rz-alerta [mensaje]="tipoError()"   tipo="error" />
+        <rz-alerta [mensaje]="tipoSuccess()" tipo="exito" />
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn--primary" [disabled]="savingTipo() || tipoForm.invalid">
+            {{ savingTipo() ? 'Guardando...' : 'Guardar cambios' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TAB: UNIDADES (HABITACIONES / CAMAS)
+       ═══════════════════════════════════════════════════════════ -->
+  <div *ngIf="activeTab() === 'unidades'">
+
+    <!-- Lista -->
+    <div class="admin-section" *ngIf="!editando()">
+      <div class="tabla-wrap">
+        <table class="admin-tabla">
+          <thead>
+            <tr><th>Img</th><th>Unidad</th><th>Nombre</th><th>Tipo</th><th>Capacidad</th><th>Precio / noche</th><th>Estado</th><th>Acciones</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let h of habitaciones()">
+              <td>
+                <div class="mini-thumb" *ngIf="h.imagenes && h.imagenes.length; else noImg">
+                  <a [href]="h.imagenes[0].url" target="_blank" title="Ver imagen">
+                    <img [src]="h.imagenes[0].url" alt="Habitación" style="width:40px; height:40px; border-radius:4px; object-fit:cover; border:1px solid #ddd;" />
+                  </a>
+                </div>
+                <ng-template #noImg>
+                  <div style="width:40px; height:40px; border-radius:4px; background:#eee; display:flex; align-items:center; justify-content:center;">
+                    <rz-icon name="image-off" [size]="16" style="color:#aaa;" />
+                  </div>
+                </ng-template>
+              </td>
+              <td><span class="codigo-badge">{{ h.numero }}</span></td>
+              <td>{{ h.nombre_display }}</td>
+              <td>{{ h.tipo?.nombre }}</td>
+              <td>{{ h.tipo?.capacidad }} persona{{ (h.tipo?.capacidad ?? 1) > 1 ? 's' : '' }}</td>
+              <td>{{ h.precio | copCurrency }}</td>
+              <td>
+                <rz-badge [variant]="h.disponible ? 'exito' : 'error'">
+                  {{ h.disponible ? 'Disponible' : 'Ocupada' }}
+                </rz-badge>
+              </td>
+              <td>
+                <button class="btn btn--outline btn--sm" (click)="editar(h)">
+                  <rz-icon name="pencil" [size]="14" /> Editar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Editor -->
+    <div class="hab-editor" *ngIf="editando() as h">
+      <div class="hab-editor__header">
+        <h2>Editando: {{ h.numero }} — {{ h.nombre_display }}</h2>
+        <button class="btn btn--ghost btn--sm" (click)="cancelar()">
+          <rz-icon name="x" [size]="16" /> Cancelar
+        </button>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="guardar()" class="hab-editor__form">
+        <div class="form-group">
+          <label>Nombre para mostrar</label>
+          <input type="text" formControlName="nombre_display" />
+        </div>
+        <div class="form-group">
+          <label>Descripción</label>
+          <textarea formControlName="descripcion" rows="3"></textarea>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Precio por noche (COP)</label>
+            <input type="number" formControlName="precio" min="1" />
+          </div>
+          <div class="form-group">
+            <label>Disponible</label>
+            <select formControlName="disponible">
+              <option [value]="true">Sí — disponible</option>
+              <option [value]="false">No — ocupada</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Subir imagen (opcional)</label>
+          <div class="file-upload-zone" (click)="fileInput.click()" [class.has-file]="!!imageFile()">
+            <ng-container *ngIf="!imagePreview()">
+              <rz-icon name="image-plus" [size]="28" />
+              <span>Clic para seleccionar una imagen</span>
+            </ng-container>
+            <ng-container *ngIf="imagePreview()">
+              <img [src]="imagePreview()" alt="Preview" class="upload-preview" />
+              <span>Cambiar archivo ({{ imageFile()?.name }})</span>
+            </ng-container>
+          </div>
+          <input #fileInput type="file" accept="image/*" style="display:none" (change)="onFileChange($event)" />
+        </div>
+
+        <!-- Imágenes actuales -->
+        <div class="imagenes-actuales" *ngIf="h.imagenes?.length">
+          <label>Imágenes actuales</label>
+          <div class="galeria-grid" style="margin-top: 8px;">
+            <div class="galeria-item" *ngFor="let img of h.imagenes" style="width: 120px; height: 120px;">
+              <a [href]="img.url" target="_blank" title="Ver foto">
+                <img [src]="img.url" [alt]="img.alt_text" />
+              </a>
+              <div class="galeria-item__overlay">
+                <button class="btn-icon btn-icon--danger" (click)="eliminarImagen(img.id, $event)" title="Eliminar foto">
+                  <rz-icon name="trash-2" [size]="14" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <rz-alerta [mensaje]="error()"   tipo="error" />
+        <rz-alerta [mensaje]="success()" tipo="exito" />
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn--primary" [disabled]="saving() || form.invalid">
+            {{ saving() ? 'Guardando...' : 'Guardar cambios' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

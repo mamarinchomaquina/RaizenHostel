@@ -1,0 +1,59 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-card__header">
+      <span class="auth-card__logo">Raizen</span>
+      <h1 class="auth-card__title">Bienvenido de nuevo</h1>
+      <p class="auth-card__sub">Inicia sesión para gestionar tus reservas</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="form-group">
+        <label for="email">Correo electrónico</label>
+        <div class="input-icon-wrap">
+          <rz-icon name="mail" [size]="16" class="input-icon" />
+          <input id="email" type="email" formControlName="email" placeholder="tu@email.com" autocomplete="email" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <div class="input-icon-wrap">
+          <rz-icon name="lock" [size]="16" class="input-icon" />
+          <input id="password" [type]="showPwd() ? 'text' : 'password'" formControlName="password" placeholder="••••••••" autocomplete="current-password" />
+          <button type="button" class="input-toggle" (click)="showPwd.update(v => !v)" [attr.aria-label]="showPwd() ? 'Ocultar' : 'Mostrar'">
+            <rz-icon [name]="showPwd() ? 'eye-off' : 'eye'" [size]="16" />
+          </button>
+        </div>
+      </div>
+
+      <!-- Captcha Section -->
+      <div class="form-group">
+        <label for="captcha">Verificación de seguridad</label>
+        <div class="captcha-container">
+          <div class="captcha-challenge-box" [class.captcha-loading]="captchaLoading()">
+            <span class="captcha-math">{{ captchaChallenge() }}</span>
+            <button type="button" class="btn-refresh" (click)="cargarCaptcha()" title="Recargar Captcha">
+              <rz-icon name="loader" [size]="14" class="spin" *ngIf="captchaLoading()" />
+              <rz-icon name="info" [size]="14" *ngIf="!captchaLoading()" />
+            </button>
+          </div>
+          <div class="input-icon-wrap captcha-input-wrap">
+            <rz-icon name="shield" [size]="14" class="input-icon" />
+            <input id="captcha" type="text" formControlName="captcha_answer" placeholder="Resultado" autocomplete="off" />
+          </div>
+        </div>
+      </div>
+
+
+      <rz-alerta [mensaje]="error()" tipo="error" />
+
+      <button type="submit" class="btn btn--primary btn--full" [disabled]="loading() || form.invalid">
+        {{ loading() ? 'Ingresando...' : 'Ingresar' }}
+      </button>
+    </form>
+
+    <p class="auth-card__footer">
+      ¿No tienes cuenta? <a routerLink="/registro">Regístrate gratis</a>
+    </p>
+  </div>
+</div>

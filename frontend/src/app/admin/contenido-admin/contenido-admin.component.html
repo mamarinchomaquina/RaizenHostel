@@ -1,0 +1,140 @@
+<div class="admin-page">
+  <div class="admin-page__header">
+    <div>
+      <h1>Contenido</h1>
+      <p>Edita los textos e imágenes del sitio público</p>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="contenido-tabs">
+    <button class="tab-btn" [class.tab-btn--active]="tab() === 'hero'" (click)="setTab('hero')">
+      <rz-icon name="image" [size]="16" /> Hero
+    </button>
+    <button class="tab-btn" [class.tab-btn--active]="tab() === 'nosotros'" (click)="setTab('nosotros')">
+      <rz-icon name="info" [size]="16" /> Nosotros
+    </button>
+    <button class="tab-btn" [class.tab-btn--active]="tab() === 'galeria'" (click)="setTab('galeria')">
+      <rz-icon name="grid" [size]="16" /> Galería
+    </button>
+  </div>
+
+  <!-- Hero -->
+  <div class="contenido-panel" *ngIf="tab() === 'hero'">
+    <div class="contenido-panel__header">
+      <h2>Sección Hero</h2>
+      <p>Título principal, subtítulo y call-to-action de la portada</p>
+    </div>
+    <form [formGroup]="heroForm" (ngSubmit)="guardarHero()" class="contenido-form">
+      <div class="form-group">
+        <label>Título principal</label>
+        <input type="text" formControlName="titulo" placeholder="Ej. Tu hogar en Dosquebradas" />
+      </div>
+      <div class="form-group">
+        <label>Subtítulo</label>
+        <input type="text" formControlName="subtitulo" placeholder="Texto secundario del hero" />
+      </div>
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>Texto del botón CTA</label>
+          <input type="text" formControlName="cta_texto" placeholder="Ej. Reservar ahora" />
+        </div>
+        <div class="form-group">
+          <label>Enlace del botón CTA</label>
+          <input type="text" formControlName="cta_link" placeholder="/reservas" />
+        </div>
+      </div>
+      <rz-alerta [mensaje]="error()" tipo="error" />
+      <rz-alerta [mensaje]="success()" tipo="exito" />
+      <div class="form-actions">
+        <button type="submit" class="btn btn--primary" [disabled]="saving() || heroForm.invalid">
+          {{ saving() ? 'Guardando...' : 'Guardar cambios' }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Nosotros -->
+  <div class="contenido-panel" *ngIf="tab() === 'nosotros'">
+    <div class="contenido-panel__header">
+      <h2>Sección Nosotros</h2>
+      <p>Texto de presentación del hostel</p>
+    </div>
+    <form [formGroup]="nosotrosForm" (ngSubmit)="guardarNosotros()" class="contenido-form">
+      <div class="form-group">
+        <label>Título</label>
+        <input type="text" formControlName="titulo" placeholder="Ej. Un rincón auténtico en Risaralda" />
+      </div>
+      <div class="form-group">
+        <label>Primer párrafo</label>
+        <textarea formControlName="parrafo1" rows="4" placeholder="Historia o descripción del hostel..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Segundo párrafo</label>
+        <textarea formControlName="parrafo2" rows="4" placeholder="Propuesta de valor, ubicación, etc."></textarea>
+      </div>
+      <rz-alerta [mensaje]="error()" tipo="error" />
+      <rz-alerta [mensaje]="success()" tipo="exito" />
+      <div class="form-actions">
+        <button type="submit" class="btn btn--primary" [disabled]="saving() || nosotrosForm.invalid">
+          {{ saving() ? 'Guardando...' : 'Guardar cambios' }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Galería -->
+  <div class="contenido-panel" *ngIf="tab() === 'galeria'">
+    <div class="contenido-panel__header">
+      <h2>Galería de fotos</h2>
+      <p>Imágenes que aparecen en la galería pública</p>
+    </div>
+
+    <!-- Upload -->
+    <div class="galeria-upload">
+      <div class="file-upload-zone" (click)="fileInput.click()" [class.has-file]="!!galeriaFile()">
+        <ng-container *ngIf="!galeriaPreview()">
+          <rz-icon name="image-plus" [size]="28" />
+          <span>Clic para seleccionar imagen</span>
+          <small>JPG, PNG o WebP — máx. 5 MB</small>
+        </ng-container>
+        <ng-container *ngIf="galeriaPreview()">
+          <img [src]="galeriaPreview()" alt="Preview" class="upload-preview" />
+          <span>Cambiar archivo ({{ galeriaFile()?.name }})</span>
+        </ng-container>
+      </div>
+      <input #fileInput type="file" accept="image/*" style="display:none" (change)="onFileChange($event)" />
+      <div class="form-group" style="max-width:360px; margin-top:var(--sp-md)">
+        <label>Texto alternativo (alt)</label>
+        <input type="text" [value]="altTextInput()" (input)="altTextInput.set($any($event.target).value)" placeholder="Descripción de la imagen para accesibilidad" />
+      </div>
+      <button class="btn btn--primary btn--sm" [disabled]="!galeriaFile() || saving()" (click)="subirImagen()" style="margin-top:var(--sp-md)">
+        <rz-icon name="upload" [size]="16" />
+        {{ saving() ? 'Subiendo...' : 'Subir imagen' }}
+      </button>
+    </div>
+
+    <rz-alerta [mensaje]="error()" tipo="error" />
+    <rz-alerta [mensaje]="success()" tipo="exito" />
+
+    <!-- Grid -->
+    <div class="galeria-grid" *ngIf="galeria().length > 0">
+      <div class="galeria-item" *ngFor="let img of galeria()">
+        <a [href]="img.url" target="_blank" title="Ver imagen en alta resolución">
+          <img [src]="img.url" [alt]="img.alt_text" />
+        </a>
+        <div class="galeria-item__overlay">
+          <button class="btn-icon btn-icon--danger" (click)="eliminarImagen(img)" title="Eliminar imagen">
+            <rz-icon name="trash-2" [size]="16" />
+          </button>
+        </div>
+        <span class="galeria-item__alt">{{ img.alt_text || 'Sin descripción' }}</span>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="galeria().length === 0">
+      <rz-icon name="image" [size]="40" />
+      <p>No hay imágenes en la galería aún</p>
+    </div>
+  </div>
+</div>

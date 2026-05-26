@@ -1,0 +1,8 @@
+@use '../../auth/login/login.component.scss';
+
+.form-error {
+  font-size: var(--fs-xs);
+  color: var(--color-error);
+  margin-top: var(--sp-xs);
+  display: block;
+}

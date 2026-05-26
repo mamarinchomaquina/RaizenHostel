@@ -1,0 +1,59 @@
+{
+  "NAVBAR": {
+    "HOME": "Home",
+    "ROOMS": "Rooms",
+    "SERVICES": "Services",
+    "GALLERY": "Gallery",
+    "CONTACT": "Contact",
+    "RESERVE": "Book",
+    "RESERVE_NOW": "Book Now",
+    "MY_RESERVES": "My Reserves",
+    "LOGOUT": "Log out",
+    "SIGN_IN": "Sign In"
+  },
+  "HERO": {
+    "LOCATION": "Dosquebradas · Risaralda · Colombia",
+    "VIEW_ROOMS": "View rooms"
+  },
+  "HOME": {
+    "ABOUT_LABEL": "About Us",
+    "ABOUT_TITLE": "A space to <em>truly rest</em>",
+    "ABOUT_TEXT_1": "Raizen Hostel was born from the desire to create a conscious refuge in Dosquebradas, Risaralda. A place where every detail — the light, the silence, the aroma of coffee — invites you to escape the noise of the world.",
+    "ABOUT_TEXT_2": "Whether you come to rest, explore the Coffee Axis, or simply pause for a moment, here you will find a temporary home that takes care of you.",
+    "AVAILABILITY_LABEL": "Availability",
+    "AVAILABILITY_TITLE": "Ready to stay in <br>Dosquebradas?",
+    "AVAILABILITY_SUBTITLE": "Book easily and safely with Wompi — card, PSE or Nequi."
+  },
+  "FOOTER": {
+    "TAGLINE": "Root · Home · Calm · Nature",
+    "DESC": "Familiar and conscious hostel in Dosquebradas, Risaralda. A space to rest, connect, and feel at home.",
+    "EXPLORE": "Explore",
+    "CONTACT": "Contact"
+  },
+  "HABITACIONES": {
+    "LABEL_HERO": "Accommodation in Dosquebradas",
+    "TITLE_HERO": "Rooms & Dormitories",
+    "DESC_HERO": "Choose between our private rooms or beds in a shared dormitory. All with WiFi, bed linen, and access to common areas.",
+    "LABEL_PRIVADAS": "Total privacy",
+    "TITLE_PRIVADAS": "Private Rooms",
+    "DESC_PRIVADAS": "5 rooms with own key, peaceful environment, and personalized attention.",
+    "LABEL_DORMITORIO": "Shared and economical",
+    "TITLE_DORMITORIO": "Shared Dormitory",
+    "DESC_DORMITORIO": "10 single beds on a common floor. Ideal for solo travelers or groups.",
+    "LABEL_PRECIO": "Rates 2026 · Breakfast included",
+    "TITLE_PRECIOS": "Accommodations <em>& Rates</em>",
+    "CAT_COMPARTIDO": "Shared",
+    "CAT_PRIVADA": "Private",
+    "POPULAR": "Popular",
+    "PERSONA": "person",
+    "PERSONAS": "people",
+    "POR_NOCHE": "COP / night",
+    "FEAT_LIST": "Breakfast · WiFi · Hotel insurance · Towel",
+    "FOTOS": "photos — click to view",
+    "RESERVAR": "Book now",
+    "WARNING_TITLE": "Prohibited — Minors and pets",
+    "WARNING_DESC": "Hostel for adults only. No children or pets allowed. If you arrive with minors or pets, you will not be admitted and will forfeit the full reservation amount.",
+    "INFO_LABEL": "All rates include: ",
+    "INFO_LIST": "Homemade breakfast · High-speed WiFi · Hotel insurance · Access to common areas · Complimentary towel · Check-in 3:00 PM · Check-out 12:00 PM."
+  }
+}

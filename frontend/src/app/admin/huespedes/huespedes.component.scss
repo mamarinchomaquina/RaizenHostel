@@ -1,0 +1,75 @@
+.huespedes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--sp-xl);
+}
+
+.huesped-card {
+  background: #fff;
+  border: 1px solid var(--arena-claro);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+
+  &__header {
+    display: flex;
+    gap: var(--sp-md);
+    align-items: center;
+    padding: var(--sp-lg) var(--sp-xl);
+    background: var(--raiz);
+    color: var(--crema);
+
+    strong { display: block; font-size: var(--fs-base); }
+    span   { font-size: var(--fs-xs); color: var(--arena); }
+  }
+
+  &__info {
+    padding: var(--sp-lg) var(--sp-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-sm);
+
+    div {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-sm);
+      font-size: var(--fs-sm);
+      color: var(--carbon-soft);
+      rz-icon { color: var(--raiz-claro); flex-shrink: 0; }
+    }
+  }
+
+  &__notas {
+    padding: var(--sp-md) var(--sp-xl);
+    background: var(--crema-puro);
+    border-top: 1px solid var(--arena-claro);
+    display: flex;
+    gap: var(--sp-sm);
+    font-size: var(--fs-xs);
+    color: var(--raiz-claro);
+    rz-icon { flex-shrink: 0; }
+  }
+}
+
+.huesped-avatar {
+  width: 44px; height: 44px;
+  background: rgba(201,168,124,.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--dorado);
+}
+
+.empty-admin {
+  text-align: center;
+  padding: var(--sp-5xl);
+  color: var(--raiz-claro);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-lg);
+  font-size: var(--fs-md);
+}
+
+.loading-msg { color: var(--raiz-claro); font-size: var(--fs-sm); }

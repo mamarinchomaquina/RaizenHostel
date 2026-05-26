@@ -1,0 +1,40 @@
+<div class="admin-page">
+  <div class="admin-page__header">
+    <h1>Huéspedes actuales</h1>
+    <p>Personas hospedadas en este momento en Raizen Hostel</p>
+  </div>
+
+  <div *ngIf="loading()" class="loading-msg">Cargando huéspedes...</div>
+
+  <div *ngIf="!loading() && huespedes().length === 0" class="empty-admin">
+    <rz-icon name="users" [size]="48" />
+    <p>No hay huéspedes actualmente hospedados.</p>
+  </div>
+
+  <div class="huespedes-grid" *ngIf="!loading() && huespedes().length">
+    <div class="huesped-card" *ngFor="let h of huespedes()">
+      <div class="huesped-card__header">
+        <div class="huesped-avatar">
+          <rz-icon name="user" [size]="24" />
+        </div>
+        <div>
+          <strong>{{ h.usuario?.nombre }}</strong>
+          <span>{{ h.unidad?.nombre_display }}</span>
+        </div>
+      </div>
+      <div class="huesped-card__info">
+        <div><rz-icon name="mail" [size]="14" /><span>{{ h.usuario?.email }}</span></div>
+        <div><rz-icon name="phone" [size]="14" /><span>{{ h.usuario?.telefono || '—' }}</span></div>
+        <div><rz-icon name="credit-card" [size]="14" /><span>{{ h.usuario?.documento || '—' }}</span></div>
+        <div><rz-icon name="calendar" [size]="14" /><span>Check-in: {{ h.checkin | fechaCo }}</span></div>
+        <div><rz-icon name="calendar-check" [size]="14" /><span>Check-out: {{ h.checkout | fechaCo }}</span></div>
+        <div><rz-icon name="users" [size]="14" /><span>{{ h.num_personas }} persona{{ h.num_personas > 1 ? 's' : '' }}</span></div>
+        <div><rz-icon name="circle-dollar-sign" [size]="14" /><span>{{ h.total | copCurrency:'' }}</span></div>
+      </div>
+      <div class="huesped-card__notas" *ngIf="h.notas">
+        <rz-icon name="message-square" [size]="14" />
+        <em>{{ h.notas }}</em>
+      </div>
+    </div>
+  </div>
+</div>

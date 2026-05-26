@@ -1,0 +1,174 @@
+.contacto-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: var(--sp-3xl);
+  align-items: start;
+}
+
+.contacto-info {
+  background: var(--raiz);
+  border-radius: var(--radius-xl);
+  padding: var(--sp-2xl);
+  color: var(--crema);
+  position: sticky;
+  top: calc(var(--navbar-height) + var(--sp-xl));
+
+  &__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-xl);
+    font-weight: var(--fw-light);
+    margin-bottom: var(--sp-xl);
+  }
+
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--sp-2xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-xl);
+
+    li {
+      display: flex;
+      gap: var(--sp-md);
+      align-items: flex-start;
+      rz-icon { color: var(--dorado); margin-top: 2px; flex-shrink: 0; }
+    }
+
+    div { display: flex; flex-direction: column; gap: 2px; }
+    strong { font-size: var(--fs-sm); font-weight: var(--fw-medium); color: var(--arena-claro); }
+    span, a { font-size: var(--fs-sm); color: var(--arena); text-decoration: none; }
+    a:hover { color: var(--crema); text-decoration: underline; }
+  }
+
+  &__social {
+    margin-top: var(--sp-2xl);
+    padding-top: var(--sp-xl);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+    strong {
+      display: block;
+      font-family: var(--font-deco);
+      font-size: var(--fs-xs);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--arena-claro);
+      margin-bottom: var(--sp-md);
+    }
+
+    .social-links {
+      display: flex;
+      gap: var(--sp-md);
+
+      a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: var(--radius-full);
+        color: var(--arena);
+        transition: all var(--ease-base);
+
+        &:hover {
+          background: var(--dorado);
+          color: var(--carbon);
+          border-color: var(--dorado);
+          transform: translateY(-2px);
+        }
+      }
+    }
+  }
+}
+
+.contacto-form-wrap {
+  background: var(--blanco-calido);
+  border: var(--linea);
+  border-radius: var(--radius-xl);
+  padding: var(--sp-2xl);
+  box-shadow: var(--shadow-sm);
+
+  form { display: flex; flex-direction: column; gap: var(--sp-lg); }
+
+  textarea {
+    width: 100%;
+    padding: 0.875rem 1.125rem;
+    background: var(--blanco-calido);
+    border: 1px solid var(--arena-claro);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: var(--fs-base);
+    color: var(--carbon-soft);
+    resize: vertical;
+    transition: border-color var(--ease-base), box-shadow var(--ease-base);
+
+    &:focus {
+      border-color: var(--raiz-claro);
+      box-shadow: 0 0 0 3px rgba(92,61,30,.08);
+      outline: none;
+    }
+  }
+}
+
+.btn--full { width: 100%; }
+
+@media (max-width: 768px) {
+  .contacto-grid { grid-template-columns: 1fr; }
+  .contacto-info { position: static; }
+}
+
+// ── Sección Mapa ──────────────────────────────────────────────────────────────
+.section--mapa {
+  background: var(--arena-palido, #f9f6f1);
+  padding-top: var(--sp-3xl);
+  padding-bottom: var(--sp-3xl);
+}
+
+.mapa-header {
+  text-align: center;
+  margin-bottom: var(--sp-2xl);
+
+  h2 {
+    font-family: var(--font-display);
+    font-size: var(--fs-2xl);
+    font-weight: var(--fw-light);
+    color: var(--carbon);
+    margin: var(--sp-xs) 0 var(--sp-sm);
+  }
+
+  p {
+    color: var(--carbon-soft);
+    font-size: var(--fs-base);
+  }
+}
+
+.mapa-wrapper {
+  position: relative;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+
+  iframe {
+    display: block;
+    width: 100%;
+    height: 450px;
+    border: 0;
+
+    @media (max-width: 768px) {
+      height: 300px;
+    }
+  }
+}
+
+.mapa-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-xs);
+  margin-top: var(--sp-lg);
+  // centrado relativo al wrapper
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}

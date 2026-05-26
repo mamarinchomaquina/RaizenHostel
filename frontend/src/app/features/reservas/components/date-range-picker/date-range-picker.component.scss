@@ -1,0 +1,417 @@
+/* ============================================================
+   PRICING CALENDAR — Raizen Coffee Theme
+   ============================================================ */
+
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pricing-calendar {
+  background: var(--blanco-calido);
+  border: 1px solid var(--arena-claro);
+  border-radius: var(--radius-md);
+  padding: var(--sp-lg);
+  box-shadow: var(--shadow-sm);
+  width: 100%;
+  max-width: 800px;
+}
+
+/* ── Navigation ────────────────────────────────────────────── */
+.cal-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--sp-md);
+
+  &__btn {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--arena-claro);
+    background: transparent;
+    color: var(--raiz);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--ease-base);
+
+    &:hover {
+      background: var(--crema);
+      border-color: var(--arena);
+    }
+
+    &--disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  }
+
+  &__titles {
+    display: flex;
+    gap: var(--sp-2xl);
+    flex: 1;
+    justify-content: center;
+
+    @media (max-width: 640px) {
+      gap: var(--sp-lg);
+    }
+  }
+
+  &__month {
+    font-family: var(--font-display);
+    font-size: var(--fs-xl);
+    font-weight: var(--fw-medium);
+    color: var(--raiz);
+  }
+}
+
+/* ── Dual calendar layout ──────────────────────────────────── */
+.cal-dual {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-lg);
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+    gap: var(--sp-md);
+  }
+}
+
+/* ── Weekday headers ───────────────────────────────────────── */
+.cal-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 3px;
+
+  span {
+    text-align: center;
+    font-family: var(--font-deco);
+    font-size: var(--fs-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--raiz-claro);
+    padding: 6px 0;
+  }
+}
+
+/* ── Calendar grid ─────────────────────────────────────────── */
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+/* ── Individual cell ───────────────────────────────────────── */
+.cal-cell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--radius-xs);
+  background: transparent;
+  cursor: pointer;
+  padding: 6px 4px;
+  transition: all 200ms ease;
+  font-family: var(--font-body);
+  min-height: 60px;
+
+  &:hover:not(:disabled):not(.cal-cell--empty) {
+    background: var(--crema);
+  }
+
+  &--empty {
+    cursor: default;
+  }
+
+  /* Day number */
+  &__day {
+    font-size: var(--fs-lg);
+    font-weight: var(--fw-medium);
+    color: var(--carbon-soft);
+    line-height: 1;
+  }
+
+  /* Price tag */
+  &__price {
+    font-size: 0.7rem;
+    color: var(--raiz-claro);
+    line-height: 1;
+    margin-top: 4px;
+    white-space: nowrap;
+
+    &--occupied {
+      color: #b54a4a;
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+  }
+
+  /* ── States ── */
+
+  &--today {
+    .cal-cell__day {
+      color: var(--dorado);
+      font-weight: var(--fw-medium);
+    }
+  }
+
+  &--today::after {
+    content: '';
+    position: absolute;
+    bottom: 3px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--dorado);
+  }
+
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.3;
+    .cal-cell__day { color: var(--arena); }
+  }
+
+  /* Occupied — light red background */
+  &--occupied {
+    cursor: not-allowed;
+    background: rgba(200, 60, 60, 0.09);
+    border: 1px solid rgba(200, 60, 60, 0.12);
+
+    .cal-cell__day {
+      color: #b54a4a;
+      opacity: 0.75;
+    }
+
+    &:hover:not(:disabled) {
+      background: rgba(200, 60, 60, 0.13);
+    }
+  }
+
+  &--good-price {
+    background: rgba(74, 103, 65, 0.08);
+
+    .cal-cell__price {
+      color: var(--musgo);
+      font-weight: var(--fw-medium);
+    }
+
+    &:hover:not(:disabled) {
+      background: rgba(74, 103, 65, 0.15);
+    }
+  }
+
+  &--selected {
+    background: var(--raiz) !important;
+    border-radius: var(--radius-xs);
+    border-color: transparent !important;
+    z-index: 2;
+
+    .cal-cell__day {
+      color: var(--crema-puro);
+      font-weight: var(--fw-bold);
+      opacity: 1;
+    }
+    .cal-cell__price {
+      color: var(--arena-claro);
+    }
+  }
+
+  &--checkin {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0; right: -2px; bottom: 0;
+      width: 4px;
+      background: inherit;
+      z-index: 1;
+    }
+  }
+
+  &--checkout {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -2px; bottom: 0;
+      width: 4px;
+      background: inherit;
+      z-index: 1;
+    }
+  }
+
+  &--checkin.cal-cell--checkout {
+    border-radius: var(--radius-xs);
+    &::before { display: none; }
+  }
+
+  &--in-range {
+    background: rgba(var(--raiz-rgb, 84, 62, 45), 0.1); /* Soft brand-colored tint */
+    border-radius: 0;
+    .cal-cell__day { 
+      color: var(--raiz); 
+      font-weight: var(--fw-medium);
+    }
+    .cal-cell__price { color: var(--raiz-claro); }
+
+    &:hover:not(:disabled) {
+      background: rgba(var(--raiz-rgb, 84, 62, 45), 0.15);
+    }
+  }
+}
+
+/* ── Legend ─────────────────────────────────────────────────── */
+.cal-legend {
+  display: flex;
+  gap: var(--sp-lg);
+  justify-content: center;
+  margin-top: var(--sp-md);
+  padding-top: var(--sp-sm);
+  border-top: 1px solid var(--arena-claro);
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: var(--fs-xs);
+    color: var(--raiz-claro);
+  }
+
+  &__dot {
+    width: 9px;
+    height: 9px;
+    border-radius: var(--radius-xs);
+
+    &--good {
+      background: rgba(74, 103, 65, 0.2);
+      border: 1px solid var(--musgo);
+    }
+    &--selected {
+      background: var(--raiz);
+    }
+    &--occupied {
+      background: rgba(200, 60, 60, 0.15);
+      border: 1px solid rgba(200, 60, 60, 0.4);
+    }
+  }
+}
+
+/* ── Summary ───────────────────────────────────────────────── */
+.cal-summary {
+  margin-top: var(--sp-md);
+  background: var(--crema);
+  border: 1px solid var(--arena-claro);
+  border-radius: var(--radius-md);
+  padding: var(--sp-md) var(--sp-lg);
+  width: 100%;
+  max-width: 800px;
+
+  &__dates {
+    display: flex;
+    gap: var(--sp-lg);
+    flex-wrap: wrap;
+  }
+
+  &__date-item {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-xs);
+    color: var(--raiz);
+
+    div {
+      display: flex;
+      flex-direction: column;
+    }
+    strong {
+      font-size: var(--fs-sm);
+      color: var(--carbon-soft);
+    }
+  }
+
+  &__label {
+    font-family: var(--font-deco);
+    font-size: var(--fs-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--raiz-claro);
+  }
+
+  &__total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--sp-sm);
+    padding-top: var(--sp-sm);
+    border-top: 1px dashed var(--arena);
+
+    span {
+      font-family: var(--font-display);
+      font-size: var(--fs-base);
+      color: var(--raiz);
+    }
+    strong {
+      font-family: var(--font-display);
+      font-size: var(--fs-xl);
+      color: var(--raiz);
+    }
+  }
+
+  &__clear {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: var(--sp-sm);
+    padding: 5px var(--sp-md);
+    border: 1px solid var(--arena);
+    border-radius: var(--radius-full);
+    background: transparent;
+    color: var(--raiz-claro);
+    font-family: var(--font-body);
+    font-size: var(--fs-xs);
+    cursor: pointer;
+    transition: all var(--ease-base);
+
+    &:hover {
+      background: var(--blanco-calido);
+      border-color: var(--raiz-claro);
+      color: var(--raiz);
+    }
+  }
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .pricing-calendar {
+    padding: var(--sp-md);
+  }
+
+  .cal-cell {
+    min-height: 36px;
+    &__price { font-size: 0.5rem; }
+    &__day   { font-size: 0.75rem; }
+  }
+
+  .cal-nav__titles { gap: var(--sp-md); }
+  .cal-nav__month  { font-size: var(--fs-sm); }
+
+  .cal-legend {
+    flex-wrap: wrap;
+    gap: var(--sp-sm);
+  }
+
+  .cal-summary__dates {
+    flex-direction: column;
+    gap: var(--sp-sm);
+  }
+}

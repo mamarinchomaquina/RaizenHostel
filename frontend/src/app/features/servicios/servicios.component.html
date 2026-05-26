@@ -1,0 +1,394 @@
+<section class="page-hero">
+  <div class="container animate-fade-in">
+    <span class="t-label">Comodidades y Aventura</span>
+    <h1>Servicios y Experiencias</h1>
+    <p>Todo lo necesario para una estadía perfecta en el Eje Cafetero y las mejores aventuras al aire libre.</p>
+  </div>
+</section>
+
+<!-- SECTION 1: HOSTEL AMENITIES -->
+<section class="section section--amenities">
+  <div class="container">
+    <div class="section-title-wrapper">
+      <span class="t-label">Tu Confort Primero</span>
+      <h2>Comodidades de Raizen Hostel</h2>
+      <p>Servicios pensados para brindarte comodidad, tranquilidad y descanso en tu estadía.</p>
+    </div>
+
+    <div class="amenidades-grid">
+      <div class="amenidad-card" *ngFor="let am of amenidades(); let i = index" rzReveal [rzDelay]="i * 80">
+        <div class="amenidad-card__icon">
+          <rz-icon [name]="am.icono" [size]="28" [strokeWidth]="1.5" />
+        </div>
+        <h3 class="amenidad-card__title">{{ am.nombre }}</h3>
+        <p class="amenidad-card__desc">{{ am.descripcion }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2: HIGHLIGHTED EXPERIENCES -->
+<section class="section section--experiences">
+  <div class="container">
+    <div class="section-title-wrapper">
+      <span class="t-label">Vive la Aventura</span>
+      <h2>Tours y Experiencias Destacadas</h2>
+      <p>Explora el Paisaje Cultural Cafetero directamente con las mejores actividades organizadas desde nuestro hostel.</p>
+    </div>
+
+    <!-- EXPERIENCE 1: CABALGATA INOLVIDABLE -->
+    <div class="experience-showcase-card">
+      <div class="experience-layout">
+        <!-- Image Column -->
+        <div class="experience-image-wrapper" rzReveal [rzDelay]="100">
+          <img src="assets/img/img/cabalgata.jpg" alt="Cabalgata Inolvidable a Caballo" class="experience-flyer-img" />
+        </div>
+
+        <!-- Content Column -->
+        <div class="experience-content" rzReveal [rzDelay]="200">
+          <div class="experience-tagline">
+            <span class="experience-badge">
+              <rz-icon name="check-circle" [size]="14" /> Salida en Toyota TXL de lujo
+            </span>
+            <span class="experience-badge bg-accent">
+              <rz-icon name="image" [size]="14" /> Recuerdos memorables
+            </span>
+          </div>
+
+          <h3 class="experience-title">Cabalgata Inolvidable a Caballo 🤠🐴</h3>
+
+          <div class="experience-description">
+            <p>
+              Disfruta una de las experiencias más auténticas y espectaculares del Eje Cafetero. Desde <strong>RAIZEN HOSTEL</strong> comienza la aventura: te recogemos en una cómoda camioneta para llevarte hacia un recorrido donde la ciudad queda atrás y empieza la conexión con la naturaleza.
+            </p>
+            <p>
+              La cabalgata atraviesa extensos paisajes verdes, hermosos potreros y caminos rodeados de montañas y vistas abiertas que parecen infinitas. Descenderás hasta la orilla del majestuoso Río Cauca, disfrutando durante el camino de un ambiente alegre, música a tu gusto y momentos que simplemente dan ganas de detenerse a mirar el paisaje y respirar profundo.
+            </p>
+            <p>
+              Durante la experiencia podrás sentir el clima cálido, la tranquilidad del campo y esa sensación de libertad que solo se vive recorriendo senderos a caballo entre paisajes increíbles. Y para completar la aventura, disfrutarás un delicioso fiambre típico colombiano en medio de la naturaleza.
+            </p>
+            <p class="experience-highlight-text">
+              No es solo una cabalgata… es una experiencia para reír, tomar fotos inolvidables, compartir y llevarte recuerdos que se quedan contigo mucho después del viaje. 🌄
+            </p>
+          </div>
+
+          <!-- Packing List / Qué debes llevar -->
+          <div class="packing-list-section">
+            <h4>🎒 ¿Qué debes llevar?</h4>
+            <ul class="packing-grid">
+              <li>
+                <span class="item-emoji">👟</span> 
+                <div>
+                  <strong>Zapatos</strong>
+                  <p>Zapatos cerrados o tenis cómodos</p>
+                </div>
+              </li>
+              <li>
+                <span class="item-emoji">👖</span>
+                <div>
+                  <strong>Prendas</strong>
+                  <p>Pantalón largo y ropa cómoda</p>
+                </div>
+              </li>
+              <li>
+                <span class="item-emoji">🧢</span>
+                <div>
+                  <strong>Gorra</strong>
+                  <p>Gorra o sombrero para el sol</p>
+                </div>
+              </li>
+              <li>
+                <span class="item-emoji">🧴</span>
+                <div>
+                  <strong>Protector</strong>
+                  <p>Protector solar para la piel</p>
+                </div>
+              </li>
+              <li>
+                <span class="item-emoji">🕶️</span>
+                <div>
+                  <strong>Gafas</strong>
+                  <p>Gafas de sol</p>
+                </div>
+              </li>
+              <li>
+                <span class="item-emoji">💧</span>
+                <div>
+                  <strong>Hidratación</strong>
+                  <p>Agua potable</p>
+                </div>
+              </li>
+              <li>
+                <span class="item-emoji">📱</span>
+                <div>
+                  <strong>Cámara</strong>
+                  <p>Celular o cámara para capturar paisajes</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Extra / CTA -->
+          <div class="experience-cta">
+            <div class="cta-info">
+              <span class="cta-emoji">🚙✨</span>
+              <div>
+                <strong>Punto de Salida</strong>
+                <p>Salida desde RAIZEN HOSTEL en camioneta de lujo</p>
+              </div>
+            </div>
+            <a href="https://wa.me/573226747512?text=Hola,%20quisiera%20reservar%20la%20experiencia%20de%20Cabalgata%20Inolvidable%20a%20Caballo" target="_blank" class="btn btn--primary btn-whatsapp-booking">
+              <rz-icon name="message-square" [size]="18" />
+              Reservar Experiencia
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- EXPERIENCE 2: TERMALES SANTA ROSA -->
+    <div class="experience-showcase-card">
+      <div class="experience-layout">
+        <!-- Image Column -->
+        <div class="experience-image-wrapper" rzReveal [rzDelay]="100">
+          <img src="assets/img/img/termales.jpg" alt="Tour a los Termales Santa Rosa de Cabal" class="experience-flyer-img" />
+        </div>
+
+        <!-- Content Column -->
+        <div class="experience-content" rzReveal [rzDelay]="200">
+          <div class="experience-tagline">
+            <span class="experience-badge">
+              <rz-icon name="check-circle" [size]="14" /> Entrada + Almuerzo Incluido
+            </span>
+            <span class="experience-badge bg-accent">
+              <rz-icon name="info" [size]="14" /> Transporte ida y regreso
+            </span>
+          </div>
+
+          <h3 class="experience-title">Tour a los Termales Santa Rosa de Cabal 🌿💧</h3>
+
+          <div class="experience-description">
+            <p>
+              Disfruta una escapada inolvidable desde <strong>RAIZEN HOSTEL</strong> hacia Termales Santa Rosa de Cabal, uno de los destinos más espectaculares y visitados del Eje Cafetero. El lugar está rodeado por montañas verdes, aire puro y el sonido relajante de una impresionante cascada natural.
+            </p>
+            <p>
+              Las aguas termales nacen desde las profundidades de la tierra y se mezclan con el paisaje creando un lugar mágico para desconectarse, descansar y renovar energía. Podrás relajarte en sus piscinas de agua caliente, disfrutar del clima fresco de montaña y saborear un delicioso almuerzo típico incluido en la experiencia.
+            </p>
+            <p>
+              El recorrido se realiza en transporte cómodo y seguro desde el hostel, para que solo te preocupes por disfrutar de la tranquilidad, el bienestar y paisajes que parecen sacados de una postal. ¡Es un plan perfecto para recordar con parejas, familia o amigos!
+            </p>
+            <p class="experience-highlight-text">
+              Relájate en aguas cálidas mientras observas las montañas y escuchas el sonido del agua cayendo entre las rocas... un lugar que hace que uno quiera quedarse un poco más. 🏔️✨
+            </p>
+          </div>
+
+          <!-- Packing List / Qué debes llevar -->
+          <div class="packing-list-section">
+            <h4>🎒 ¿Qué debes llevar?</h4>
+            <ul class="packing-grid">
+              <li>
+                <span class="item-emoji">👙</span> 
+                <div>
+                  <strong>Vestido de baño</strong>
+                  <p>Prenda adecuada para las piscinas</p>
+                </div>
+              </li>
+              <li>
+                <span class="item-emoji">🩴</span>
+                <div>
+                  <strong>Calzado</strong>
+                  <p>Sandalias o calzado cómodo</p>
+                </div>
+              </li>
+              <li>
+                <span class="item-emoji">🧺</span>
+                <div>
+                  <strong>Toalla</strong>
+                  <p>Para secarte al salir</p>
+                </div>
+              </li>
+              <li>
+                <span class="item-emoji">🧥</span>
+                <div>
+                  <strong>Abrigo</strong>
+                  <p>Chaqueta ligera para clima fresco</p>
+                </div>
+              </li>
+              <li>
+                <span class="item-emoji">🧴</span>
+                <div>
+                  <strong>Protector</strong>
+                  <p>Bloqueador solar</p>
+                </div>
+              </li>
+              <li>
+                <span class="item-emoji">🕶️</span>
+                <div>
+                  <strong>Gafas</strong>
+                  <p>Gafas de sol</p>
+                </div>
+              </li>
+              <li>
+                <span class="item-emoji">💧</span>
+                <div>
+                  <strong>Hidratación</strong>
+                  <p>Agua o bebida personal</p>
+                </div>
+              </li>
+              <li>
+                <span class="item-emoji">📱</span>
+                <div>
+                  <strong>Cámara</strong>
+                  <p>Celular para fotos espectaculares</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Extra / CTA -->
+          <div class="experience-cta">
+            <div class="cta-info">
+              <span class="cta-emoji">🚐✨</span>
+              <div>
+                <strong>Servicios Incluidos</strong>
+                <p>Transporte + Entrada a los Termales + Almuerzo + Acompañamiento</p>
+              </div>
+            </div>
+            <a href="https://wa.me/573226747512?text=Hola,%20quisiera%20reservar%20el%20Tour%20a%20los%20Termales%20de%20Santa%20Rosa" target="_blank" class="btn btn--primary btn-whatsapp-booking">
+              <rz-icon name="message-square" [size]="18" />
+              Reservar Experiencia
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- EXPERIENCE 3: SALENTO + VALLE DEL COCORA + FILANDIA -->
+    <div class="experience-showcase-card">
+      <div class="experience-layout">
+        <!-- Image Column -->
+        <div class="experience-image-wrapper" rzReveal [rzDelay]="100">
+          <img src="assets/img/img/vallecocora.jpg" alt="Tour Valle del Cocora, Salento y Filandia" class="experience-flyer-img" />
+        </div>
+
+        <!-- Content Column -->
+        <div class="experience-content" rzReveal [rzDelay]="200">
+          <div class="experience-tagline">
+            <span class="experience-badge">
+              <rz-icon name="check-circle" [size]="14" /> Tour de un Día Completo
+            </span>
+            <span class="experience-badge bg-accent">
+              <rz-icon name="map-pin" [size]="14" /> 3 Destinos Inolvidables
+            </span>
+          </div>
+
+          <h3 class="experience-title">Salento + Valle del Cocora + Filandia 🌿🐎☕</h3>
+
+          <div class="experience-description">
+            <p>
+              Prepárate para vivir un día que reúne aventura, paisajes espectaculares y la magia auténtica del Eje Cafetero. Desde la comodidad de nuestra camioneta comienza el recorrido hacia algunos de los lugares más hermosos y visitados de la región.
+            </p>
+            <p>
+              Nuestra primera parada será el impresionante <strong>Valle del Cocora</strong>, donde las gigantes palmas de cera parecen tocar las nubes. Allí disfrutarás de un recorrido a caballo entre senderos verdes, montañas cubiertas por neblina y paisajes que parecen irreales. Cada rincón será una oportunidad perfecta para fotos y recuerdos que se quedan para siempre.
+            </p>
+            <p>
+              Seguiremos hacia las coloridas calles de <strong>Salento</strong>, caminando entre balcones llenos de flores, tiendas artesanales, cafés y rincones llenos de vida y cultura cafetera. En la tarde nos dirigiremos hacia <strong>Filandia</strong>, uno de los pueblos más encantadores y auténticos del Eje Cafetero.
+            </p>
+            <p>
+              Disfrutarás de un hermoso atardecer entre montañas y paisajes increíbles. Luego podrás caminar por sus calles iluminadas, sentir el ambiente acogedor del pueblo, disfrutar de música y visitar un bar en una noche tranquila y especial.
+            </p>
+            <p class="experience-highlight-text">
+              Un tour donde vivirás lo mejor del Eje Cafetero en un solo día: aventura, caballos, paisajes, pueblos mágicos, atardeceres y momentos que querrás repetir. 🚐🌴🐎☕✨
+            </p>
+          </div>
+
+          <!-- Qué incluye -->
+          <div class="packing-list-section">
+            <h4>✅ ¿Qué incluye?</h4>
+            <ul class="packing-grid">
+              <li>
+                <span class="item-emoji">🚐</span>
+                <div>
+                  <strong>Transporte</strong>
+                  <p>Ida y vuelta en camioneta cómoda</p>
+                </div>
+              </li>
+              <li>
+                <span class="item-emoji">🐎</span>
+                <div>
+                  <strong>Cabalgata</strong>
+                  <p>Recorrido a caballo en el Valle del Cocora</p>
+                </div>
+              </li>
+              <li>
+                <span class="item-emoji">🍽️</span>
+                <div>
+                  <strong>Almuerzo</strong>
+                  <p>Trucha asada en el Valle del Cocora</p>
+                </div>
+              </li>
+              <li>
+                <span class="item-emoji">🏘️</span>
+                <div>
+                  <strong>Salento</strong>
+                  <p>Visita al pueblo cafetero más famoso</p>
+                </div>
+              </li>
+              <li>
+                <span class="item-emoji">🌅</span>
+                <div>
+                  <strong>Filandia</strong>
+                  <p>Atardecer y noche mágica en el pueblo</p>
+                </div>
+              </li>
+              <li>
+                <span class="item-emoji">🍟</span>
+                <div>
+                  <strong>Snack nocturno</strong>
+                  <p>Pausa antes del regreso al hostel</p>
+                </div>
+              </li>
+              <li>
+                <span class="item-emoji">👤</span>
+                <div>
+                  <strong>Acompañamiento</strong>
+                  <p>Durante todo el tour</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- CTA -->
+          <div class="experience-cta">
+            <div class="cta-info">
+              <span class="cta-emoji">🕗✨</span>
+              <div>
+                <strong>Horario del Tour</strong>
+                <p>Salida 8:00 a.m. · Regreso aproximado 11:00 p.m.</p>
+              </div>
+            </div>
+            <a href="https://wa.me/573226747512?text=Hola,%20quisiera%20reservar%20el%20Tour%20Salento%20Valle%20del%20Cocora%20y%20Filandia" target="_blank" class="btn btn--primary btn-whatsapp-booking">
+              <rz-icon name="message-square" [size]="18" />
+              Reservar Experiencia
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- COMING SOON PLACEHOLDER -->
+    <div class="experience-showcase-placeholder" rzReveal [rzDelay]="150">
+      <div class="placeholder-content">
+        <div class="placeholder-icon">
+          <rz-icon name="images" [size]="40" [strokeWidth]="1.2" />
+        </div>
+        <h3>Próximamente más aventuras...</h3>
+        <p>Estamos diseñando más recorridos y experiencias espectaculares por el Eje Cafetero para tu próximo viaje. ¡Pregunta en recepción por los tours del día!</p>
+      </div>
+    </div>
+
+  </div>
+</section>

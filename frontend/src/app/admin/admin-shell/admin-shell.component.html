@@ -1,0 +1,49 @@
+<div class="admin-layout" [class.sidebar-collapsed]="!sidebarOpen()">
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar__brand">
+      <rz-icon name="home" [size]="20" />
+      <span *ngIf="sidebarOpen()">Raizen Admin</span>
+    </div>
+
+    <nav class="admin-sidebar__nav">
+      <a
+        *ngFor="let item of navItems"
+        [routerLink]="item.path"
+        routerLinkActive="active"
+        class="admin-nav-item">
+        <rz-icon [name]="item.icon" [size]="20" />
+        <span *ngIf="sidebarOpen()">{{ item.label }}</span>
+      </a>
+    </nav>
+
+    <div class="admin-sidebar__footer">
+      <div class="admin-user" *ngIf="sidebarOpen()">
+        <rz-icon name="user" [size]="16" />
+        <span>{{ firstName }}</span>
+      </div>
+      <button class="admin-logout" (click)="logout()" aria-label="Cerrar sesión">
+        <rz-icon name="log-out" [size]="18" />
+        <span *ngIf="sidebarOpen()">Salir</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Content -->
+  <div class="admin-content">
+    <header class="admin-topbar">
+      <button class="topbar-toggle" (click)="sidebarOpen.update(v => !v)" aria-label="Toggle sidebar">
+        <rz-icon [name]="sidebarOpen() ? 'panel-left-close' : 'panel-left-open'" [size]="22" />
+      </button>
+      <a href="/" target="_blank" class="topbar-link">
+        <rz-icon name="external-link" [size]="16" />
+        Ver sitio
+      </a>
+    </header>
+    <main class="admin-main">
+      <router-outlet />
+    </main>
+  </div>
+
+</div>

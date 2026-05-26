@@ -1,0 +1,67 @@
+<section class="hero">
+  <!-- Fondo dinámico -->
+  <div class="hero__bg" *ngIf="slides.length; else staticBg">
+    <div
+      class="hero__slide"
+      *ngFor="let slide of slides; let i = index"
+      [ngClass]="{'active': i === currentIndex()}"
+      [style.backgroundImage]="'url(' + slide.url + ')'"
+      [attr.aria-label]="slide.alt">
+    </div>
+  </div>
+  <ng-template #staticBg>
+    <div class="hero__bg hero__bg--gradient" style="background-image: url('/images/HeroSection.png'); background-size: cover; background-position: center;"></div>
+  </ng-template>
+
+  <div class="hero__overlay"></div>
+
+  <!-- Contenido principal — abajo izquierda -->
+  <div class="hero__content container">
+    <!-- Logo — arriba -->
+    <div class="hero__logo-wrap">
+      <img src="/images/Raizen-logo.png" alt="Raizen Hostel" class="hero__logo" />
+    </div>
+
+    <!-- Texto — abajo -->
+    <div class="hero__text">
+      <span class="hero__label">{{ 'HERO.LOCATION' | rzTranslate }}</span>
+      <h1 class="hero__title">
+        Raizen<br>
+        <em>Hostel</em>
+      </h1>
+      <p class="hero__subtitle">{{ heroData.subtitulo }}</p>
+      <div class="hero__actions">
+        <a class="btn btn--dorado btn--lg" [routerLink]="heroData.cta_link">
+          {{ heroData.cta_texto }}
+        </a>
+        <a class="btn btn--crema btn--lg" routerLink="/habitaciones">
+          {{ 'HERO.VIEW_ROOMS' | rzTranslate }}
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Indicadores de slides -->
+  <div class="hero__dots" *ngIf="slides.length > 1">
+    <button
+      *ngFor="let slide of slides; let i = index"
+      class="hero__dot"
+      [class.active]="i === currentIndex()"
+      (click)="goTo(i)"
+      [attr.aria-label]="'Ir a slide ' + (i + 1)">
+    </button>
+  </div>
+
+  <!-- Controles de navegación -->
+  <button class="hero__arrow hero__arrow--prev" (click)="prev()" *ngIf="slides.length > 1" aria-label="Anterior">
+    <rz-icon name="chevron-left" [size]="28" />
+  </button>
+  <button class="hero__arrow hero__arrow--next" (click)="next()" *ngIf="slides.length > 1" aria-label="Siguiente">
+    <rz-icon name="chevron-right" [size]="28" />
+  </button>
+
+  <!-- Scroll indicator -->
+  <div class="hero__scroll-hint">
+    <rz-icon name="chevrons-down" [size]="20" />
+  </div>
+</section>

@@ -1,0 +1,11 @@
+RewriteEngine On
+
+# Pasar el header Authorization a PHP (Apache lo strip por defecto)
+SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+
+# Si el archivo o directorio existe físicamente, servirlo directamente
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Todo lo demás va al router
+RewriteRule ^(.*)$ index.php [QSA,L]
